@@ -1,23 +1,55 @@
 import { useState } from "react";
+import { sendOtp, verifyOtp } from "../services/authService";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router-dom";
 
 const SignupPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [mobile, setMobile] = useState(""); // Mobile is collected but not used for login
+  const [mobile, setMobile] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const sendOtp = (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault();
-    console.log("Sending OTP to Email:", email);
-    setOtpSent(true); // Simulating OTP sent
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await sendOtp(email);
+      if (response.success) {
+        setOtpSent(true);
+        setMessage("OTP sent to your email.");
+      } else {
+        setMessage(response.message || "Failed to send OTP.");
+      }
+    } catch (error) {
+      setMessage("Error sending OTP. Try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const verifyOtp = (e) => {
+  const handleVerifyOtp = async (e) => {
     e.preventDefault();
-    console.log("Verifying OTP:", otp);
-    alert("Signup successful!"); // Simulating successful signup
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await verifyOtp(email, otp);
+      if (response.success) {
+        setMessage("Signup successful!");
+        alert("Signup successful!");
+      } else {
+        setMessage(response.message || "Invalid OTP.");
+      }
+    } catch (error) {
+      setMessage("Error verifying OTP. Try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -25,7 +57,7 @@ const SignupPage = () => {
       <div className="card p-4 shadow-lg" style={{ width: "400px" }}>
         <h2 className="text-center mb-4">Sign Up</h2>
 
-        <form onSubmit={otpSent ? verifyOtp : sendOtp}>
+        <form onSubmit={otpSent ? handleVerifyOtp : handleSendOtp}>
           <div className="mb-3">
             <input
               type="text"
@@ -59,7 +91,6 @@ const SignupPage = () => {
               className="form-control"
               disabled={otpSent}
             />
-            
           </div>
 
           {otpSent && (
@@ -75,9 +106,15 @@ const SignupPage = () => {
             </div>
           )}
 
-          <button type="submit" className="btn btn-success w-100">
-            {otpSent ? "Verify OTP" : "Send OTP"}
+          {message && <p className="text-center text-danger">{message}</p>}
+
+          <button type="submit" className="btn btn-success w-100" disabled={loading}>
+            {loading ? "Processing..." : otpSent ? "Verify OTP" : "Send OTP"}
           </button>
+
+          <p className="text-center mt-3">
+            Already have an account? <Link to="/">Login here</Link>
+          </p>
         </form>
       </div>
     </div>
