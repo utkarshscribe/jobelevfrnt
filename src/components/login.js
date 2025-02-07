@@ -37,7 +37,7 @@ const LoginPage = () => {
 
     try {
       const response = await verifyOtp(email, otp);
-      if (response.success) {
+      if (response.status) {
         setMessage("Login successful!");
         alert("Login successful!");
       } else {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { sendOtp, verifyOtp } from "../services/authService";
+import { register, sendOtp, verifyOtp } from "../services/authService";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
 
@@ -18,7 +18,7 @@ const SignupPage = () => {
     setMessage("");
 
     try {
-      const response = await sendOtp(email);
+      const response = await register(email, name, mobile);
       if (response.success) {
         setOtpSent(true);
         setMessage("OTP sent to your email.");
@@ -26,7 +26,8 @@ const SignupPage = () => {
         setMessage(response.message || "Failed to send OTP.");
       }
     } catch (error) {
-      setMessage("Error sending OTP. Try again.");
+      setMessage("Invalid email or email already exists.");
+      console.log(error.response)
     } finally {
       setLoading(false);
     }
@@ -39,14 +40,14 @@ const SignupPage = () => {
 
     try {
       const response = await verifyOtp(email, otp);
-      if (response.success) {
+      if (response.status) {
         setMessage("Signup successful!");
         alert("Signup successful!");
       } else {
         setMessage(response.message || "Invalid OTP.");
       }
     } catch (error) {
-      setMessage("Error verifying OTP. Try again.");
+      setMessage("Invalid OTP");
     } finally {
       setLoading(false);
     }
