@@ -75,11 +75,16 @@ const UserComplaintForm = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${authToken}`,
+            "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
           },
         }
       );
-
+      
+      if (response.status === 200 || response.status === 201) {
+      setMessage("Complaint submitted successfully!");
+    } else {
+      setMessage("Failed to submit complaint.");
+    }
       setMessage("Complaint submitted successfully!");
       
       setFormData({

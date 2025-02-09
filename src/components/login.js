@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { sendOtp, verifyOtp } from "../services/authService";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,8 +9,6 @@ const LoginPage = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  
-  const navigate = useNavigate();
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
@@ -39,11 +37,12 @@ const LoginPage = () => {
 
     try {
       const response = await verifyOtp(email, otp);
-      if (response.status && response.token) {
-        localStorage.setItem("authToken", response.token); 
+      if (response.status) {
+        console.log(response)
         setMessage("Login successful!");
+        localStorage.setItem("authToken", response.userToken); // Save token
         alert("Login successful!");
-        navigate("/dashboard");
+        window.location.href = "/dashboard"; 
       } else {
         setMessage(response.message || "Invalid OTP.");
       }
@@ -55,8 +54,15 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div className="card p-4 shadow-lg" style={{ width: "400px" }}>
+    <div
+      className="d-flex justify-content-center align-items-center vh-100 bg-cover"
+      style={{
+        backgroundImage: "url('/src/assets/background.jpg')", // Path to your image
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="card p-4 shadow-lg" style={{ width: "400px", backgroundColor: "rgba(255, 255, 255, 0.8)" }}>
         <h2 className="text-center mb-4">Login</h2>
 
         <form onSubmit={otpSent ? handleVerifyOtp : handleSendOtp}>

@@ -12,7 +12,7 @@ const MyResume = () => {
 
   // Fetch user data
   useEffect(() => {
-    axios.get("https://jobapi.crmpannel.site/auth/v1/myresume", {
+    axios.get("https://jobapi.crmpannel.site/api/v1/myresume", {
       headers: { Authorization: `Bearer ${authToken}` },
     })
     .then((response) => setResumeData(response.data))
@@ -26,7 +26,7 @@ const MyResume = () => {
 
   // Save updated resume
   const saveResume = () => {
-    axios.put("https://jobapi.crmpannel.site/auth/v1/myresume", resumeData, {
+    axios.put("https://jobapi.crmpannel.site/api/v1/myresume", resumeData, {
       headers: { Authorization: `Bearer ${authToken}`, "Content-Type": "application/json" },
     })
     .then(() => setEditing(false))

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink, Routes, Route, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css"; // Ensure Bootstrap Icons CSS is imported
@@ -11,8 +11,16 @@ const UserDashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("authToken"); // Remove token from storage
-    navigate("/loginup"); // Redirect to login page
+    navigate("/"); // Redirect to login page
   };
+  
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      navigate("/"); 
+    }
+  }, [] )
+  
 
   return (
     <div className="d-flex" style={{ minHeight: "100vh", backgroundColor: "#f8f9fa" }}>
@@ -69,7 +77,7 @@ const UserDashboard = () => {
             <h2 className="mb-0">User Dashboard</h2>
             <div>
               {/* Profile or logout button */}
-              <button className="btn btn-outline-secondary">
+              <button className="btn btn-outline-secondary" onClick={handleLogout}>
                 <i className="bi bi-box-arrow-right me-1"></i> Logout
               </button>
             </div>

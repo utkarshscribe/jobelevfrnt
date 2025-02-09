@@ -22,6 +22,8 @@ const SignupPage = () => {
       if (response.success) {
         setOtpSent(true);
         setMessage("OTP sent to your email.");
+        localStorage.setItem("authToken", response.userToken);
+        window.location.href = "/dashboard";
       } else {
         setMessage(response.message || "Failed to send OTP.");
       }
@@ -114,7 +116,7 @@ const SignupPage = () => {
           </button>
 
           <p className="text-center mt-3">
-            Already have an account? <Link to="/">Login here</Link>
+            Already have an account? <Link to="/loginup">Login here</Link>
           </p>
         </form>
       </div>
