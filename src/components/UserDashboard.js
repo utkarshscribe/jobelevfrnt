@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, Routes, Route } from "react-router-dom";
+import { NavLink, Routes, Route, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css"; // Ensure Bootstrap Icons CSS is imported
 import MyResume from "./dashboard/MyResume.js";
@@ -7,9 +7,16 @@ import UserComplaints from "./dashboard/UserComplaints.js";
 import UserJobs from "./dashboard/UserJobs.js";
 
 const UserDashboard = () => {
+  const navigate = useNavigate(); // Hook to navigate between pages
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken"); // Remove token from storage
+    navigate("/loginup"); // Redirect to login page
+  };
+
   return (
     <div className="d-flex" style={{ minHeight: "100vh", backgroundColor: "#f8f9fa" }}>
-      {/* Sidebar */}
+      
       <aside className="bg-dark text-white p-4" style={{ width: "250px" }}>
         <div className="mb-5 text-center">
           <h4 className="fw-bold">Dashboard</h4>

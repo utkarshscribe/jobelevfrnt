@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { sendOtp, verifyOtp } from "../services/authService";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -9,6 +9,8 @@ const LoginPage = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  
+  const navigate = useNavigate();
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
@@ -37,9 +39,11 @@ const LoginPage = () => {
 
     try {
       const response = await verifyOtp(email, otp);
-      if (response.status) {
+      if (response.status && response.token) {
+        localStorage.setItem("authToken", response.token); 
         setMessage("Login successful!");
         alert("Login successful!");
+        navigate("/dashboard");
       } else {
         setMessage(response.message || "Invalid OTP.");
       }
