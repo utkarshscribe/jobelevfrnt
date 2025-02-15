@@ -8,13 +8,13 @@ import UserJobs from "./dashboard/UserJobs.js";
 import { getUser } from "../services/authService.js";
 import JobUpload from "./admin/JobUpload";
 import AdminComplaints from "./admin/AdminComplaints";
-import ResumeDetails from "./admin/ResumeDetails";
+//import ResumeDetails from "./admin/ResumeDetails";
 import Resume from "./ResumeBuilder.js";
 
 const UserDashboard = () => {
   const navigate = useNavigate(); // Hook to navigate between pages
 
-  const [role, setrole] = useState("user");
+  const [role, setrole] = useState("employer");
 
   const handleLogout = () => {
     localStorage.removeItem("authToken"); // Remove token from storage
@@ -25,19 +25,23 @@ const UserDashboard = () => {
     const checkAuth = async () => {
       const token = localStorage.getItem("authToken");
       if (!token) {
-        navigate("/"); // Redirect to home or login page if no token
+        navigate("/"); 
         return;
       }
 
       try {
         const response = await getUser(token);
-        //  setrole(response?.data?.profileType); // Set the role state if the user is an admin
+        //  setrole(response?.data?.profileType); 
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
     checkAuth();
   }, []);
+
+  function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
   return (
     <div
@@ -46,7 +50,7 @@ const UserDashboard = () => {
     >
       <aside className="bg-dark text-white p-4" style={{ width: "250px" }}>
         <div className="mb-5 text-center">
-          <h4 className="fw-bold">{role} Dashboard</h4>
+          <h4 className="fw-bold">{capitalizeFirstLetter(role) } Dashboard</h4>
         </div>
         <ul className="nav flex-column">
           {role === "user" && (
@@ -77,7 +81,7 @@ const UserDashboard = () => {
               </NavLink>
             </li>
           )}
-          {role === "employer" && (
+          {role !== "user" && (
             <li className="nav-item mb-3">
               <NavLink
                 to="/dashboard/resumes"
@@ -87,22 +91,7 @@ const UserDashboard = () => {
                 }
               >
                 <i className="bi bi-briefcase me-2"></i>
-                Resume
-              </NavLink>
-            </li>
-          )}
-          {role === "admin" && (
-            <li className="nav-item">
-              <NavLink
-                to="/admin/resume/:id"
-                className={({ isActive }) =>
-                  `nav-link d-flex align-items-center px-3 py-2 rounded ${
-                    isActive ? "bg-primary text-white" : "text-white-50"
-                  }`
-                }
-              >
-                <i className="bi bi-file-earmark-person me-2"></i>
-                Resume Details
+                All Resume
               </NavLink>
             </li>
           )}
@@ -110,7 +99,7 @@ const UserDashboard = () => {
           {role !== "user" && (
             <li className="nav-item">
               <NavLink
-                to="/admin/jobs"
+                to="/dashboard/job"
                 className={({ isActive }) =>
                   `nav-link d-flex align-items-center px-3 py-2 rounded ${
                     isActive ? "bg-primary text-white" : "text-white-50"
@@ -125,7 +114,7 @@ const UserDashboard = () => {
           {role === "admin" ? (
             <li className="nav-item">
               <NavLink
-                to="/admin/complaints"
+                to="/dashboard/complaints"
                 className={({ isActive }) =>
                   `nav-link d-flex align-items-center px-3 py-2 rounded ${
                     isActive ? "bg-primary text-white" : "text-white-50"
@@ -139,7 +128,7 @@ const UserDashboard = () => {
           ) : (
             <li className="nav-item mb-3">
               <NavLink
-                to="/dashboard/complaints"
+                to="/dashboard/complaint"
                 className={({ isActive }) =>
                   "nav-link d-flex align-items-center px-3 py-2 rounded " +
                   (isActive ? "bg-primary text-white" : "text-white-50")
@@ -158,7 +147,7 @@ const UserDashboard = () => {
         {/* Top Header */}
         <header className="bg-light border-bottom shadow-sm py-3">
           <div className="container-fluid d-flex justify-content-between align-items-center">
-            <h2 className="mb-0">{role ? "Admin" : "User"} Dashboard</h2>
+            <h2 className="mb-0">{capitalizeFirstLetter (role)} Dashboard</h2>
             <div>
               {/* Profile or logout button */}
               <button
@@ -177,15 +166,15 @@ const UserDashboard = () => {
             <div className="card shadow-sm">
               <div className="card-body">
                 <Routes>
-                  <Route path="resumes" element={<ResumeDetails />} />
-                  <Route path="jobs" element={<JobUpload />} />
+                  
+                  <Route path="job" element={<JobUpload />} />
                   <Route path="complaints" element={<AdminComplaints />} />
-                  <Route path="*" element={<ResumeDetails />} />
+                 
                   <Route path="resume" element={<MyResume />} />
-                  <Route path="complaints" element={<UserComplaints />} />
+                  <Route path="complaint" element={<UserComplaints />} />
                   <Route path="jobs" element={<UserJobs />} />
                   <Route path="resumes" element={<Resume />} />
-                  <Route path="*" element={<MyResume />} />
+                  
                 </Routes>
               </div>
             </div>
