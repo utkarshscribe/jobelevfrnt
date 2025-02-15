@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { sendOtp, verifyOtp } from "../services/authService";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useState, useEffect } from "react";
+import { sendOtp, verifyOtp, getUser } from "../services/authService"; // API Calls
 import { Link, useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -9,7 +9,9 @@ const LoginPage = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
+  // Handle sending OTP
   const handleSendOtp = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -30,6 +32,7 @@ const LoginPage = () => {
     }
   };
 
+  // Handle OTP verification & redirection
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -38,11 +41,8 @@ const LoginPage = () => {
     try {
       const response = await verifyOtp(email, otp);
       if (response.status) {
-        console.log(response)
-        setMessage("Login successful!");
         localStorage.setItem("authToken", response.userToken); // Save token
-        alert("Login successful!");
-        window.location.href = "/dashboard"; 
+        window.location.href = "/dashboard"; // Redirect to dashboard
       } else {
         setMessage(response.message || "Invalid OTP.");
       }
@@ -57,7 +57,7 @@ const LoginPage = () => {
     <div
       className="d-flex justify-content-center align-items-center vh-100 bg-cover"
       style={{
-        backgroundImage: "url('/src/assets/background.jpg')", // Path to your image
+        backgroundImage: "url('/assets/background.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

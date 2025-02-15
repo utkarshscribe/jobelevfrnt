@@ -25,11 +25,25 @@ export const register = async (email, fullName, mobile) => {
 
 export const verifyOtp = async (email, otp) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/verifyOtp`, { email, otp });
+    const response = await axios.post(`${API_BASE_URL}/verifyOtp`, { email, otp },
+      { headers: { "Content-Type": "application/json" } }
+    );
     return response.data;
   } catch (error) {
     console.error("Error verifying OTP:", error);
     throw error;
+  }
+};
+
+export const getUser = async (token) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/user`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    return { success: false, message: "Failed to fetch user" };
   }
 };
 
