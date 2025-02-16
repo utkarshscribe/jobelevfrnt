@@ -105,7 +105,7 @@ const MyResume = () => {
   // Save the updated resume to your backend API.
   const saveResume = () => {
     axios
-      .put("https://jobapi.crmpannel.site/api/v1/myresume", resumeData, {
+      .patch("https://jobapi.crmpannel.site/api/v1/user", resumeData, {
         headers: {
           Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",

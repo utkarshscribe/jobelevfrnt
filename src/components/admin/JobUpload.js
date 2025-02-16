@@ -17,15 +17,11 @@ const JobUpload = () => {
 const BulkJobUpload = () => {
   const [files, setFiles] = useState([]);
   const [message, setMessage] = useState("");
-  const [jobs, setJobs] = useState([]); // This will hold the returned jobs from the API
-
-  // Handle file selection
+  const [jobs, setJobs] = useState([]); 
   const handleFileChange = (e) => {
     setFiles(e.target.files);
   };
-
-  // Handle the upload and conversion of Excel file data to the desired format
-  const handleUpload = async () => {
+ const handleUpload = async () => {
     if (files.length === 0) {
       setMessage("Please select at least one file.");
       return;
@@ -34,29 +30,17 @@ const BulkJobUpload = () => {
     let allJobs = [];
 
     try {
-      // Process each selected file
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        // Read the file as an ArrayBuffer
         const data = await file.arrayBuffer();
-
-        // Parse the Excel file
         const workbook = XLSX.read(data, { type: "array" });
-        // Assume data is in the first sheet
         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-        // Convert the sheet to JSON
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
-
-        // Map the parsed data to the required format:
-        
-
-        // Add this file's jobs to the main array
         allJobs = allJobs.concat(jsonData);
       }
 
       console.log("Extracted jobs:", allJobs);
 
-      // OPTIONAL: Filter out any jobs missing required fields if necessary
       const validJobs = allJobs;
       console.log("Valid jobs:", validJobs);
       
@@ -65,7 +49,6 @@ const BulkJobUpload = () => {
         return;
       }
 
-      // Send the JSON array of jobs to your backend endpoint
       const authToken = localStorage.getItem("authToken");
       const response = await axios.post(
         "https://jobapi.crmpannel.site/auth/v1/bulkjob",

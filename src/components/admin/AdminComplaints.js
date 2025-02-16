@@ -16,7 +16,8 @@ const AdminComplaints = () => {
       const response = await axios.get("https://jobapi.crmpannel.site/auth/v1/complaints", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setComplaints(response.data);
+      console.log(response)
+      setComplaints(response.data.complaints);
     } catch (error) {
       console.error("Error fetching complaints:", error);
     }
@@ -25,15 +26,15 @@ const AdminComplaints = () => {
   const handleUpdateRemark = async (id) => {
     try {
       const token = localStorage.getItem("authToken");
-      await axios.put(
-        `https://jobapi.crmpannel.site/auth/v1/complaints/${id}`,
+      await axios.patch(
+        `https://jobapi.crmpannel.site/auth/v1/complaint/${id}`,
         { remark: remark[id] || "" },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
       setMessage("Remark updated successfully!");
-      getComplaints(); // Refresh list
+      getComplaints(); 
     } catch (error) {
       console.error("Error updating remark:", error);
     }
@@ -43,15 +44,15 @@ const AdminComplaints = () => {
     try {
       const newStatus = currentStatus === "resolved" ? "pending" : "resolved";
       const token = localStorage.getItem("authToken");
-      await axios.put(
-        `https://jobapi.crmpannel.site/auth/v1/complaints/${id}/status`,
+      await axios.patch(
+        `https://jobapi.crmpannel.site/auth/v1/complaint/${id}`,
         { cStatus: newStatus },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
       setMessage(`Status updated to ${newStatus}!`);
-      getComplaints(); // Refresh list
+      getComplaints(); 
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -85,8 +86,8 @@ const AdminComplaints = () => {
             </tr>
           </thead>
           <tbody>
-            {complaints.length > 0 ? (
-              complaints.map((comp) => (
+            {complaints?.length > 0 ? (
+              complaints?.map((comp) => (
                 <tr key={comp._id}>
                   <td>{comp.name || "N/A"}</td>
                   <td>{comp.email || "N/A"}</td>

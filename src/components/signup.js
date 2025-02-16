@@ -11,6 +11,7 @@ const SignupPage = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [profileType, setProfileType] = useState("");
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
@@ -18,7 +19,7 @@ const SignupPage = () => {
     setMessage("");
 
     try {
-      const response = await register(email, name, mobile);
+      const response = await register(email, name, mobile, profileType);
       if (response.success) {
         setOtpSent(true);
         setMessage("OTP sent to your email.");
@@ -72,6 +73,23 @@ const SignupPage = () => {
               disabled={otpSent}
             />
           </div>
+
+          <div className="mb-3">
+            <select
+              type="text"
+              placeholder="Full Name"
+              value={profileType}
+              onChange={(e) => setProfileType(e.target.value)}
+              className="form-control"
+              required
+              disabled={otpSent}
+            ><option value="">Select Profile Type</option>
+              <option 
+            value="user">Candidate</option>
+              <option value="employer">Employer</option>
+            </select>
+          </div>
+
 
           <div className="mb-3">
             <input

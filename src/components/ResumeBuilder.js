@@ -4,20 +4,23 @@ import { Card, CardBody, CardTitle, Table, Button } from "reactstrap";
 
 const ResumeDetails = () => {
   const [resumes, setResumes] = useState([]);
-  const authToken = localStorage.getItem("token");
+  const authToken = localStorage.getItem("authToken");
 
   useEffect(() => {
-    axios
-      .get("https://jobapi.crmpannel.site/api/v1/myresume", {
-        headers: { Authorization: `Bearer ${authToken}` },
-      })
-      .then((response) => {
-        setResumes(response.data.resumes); 
-      })
-      .catch((error) => {
+    const fetchResumes = async () => {
+      try {
+        const response = await axios.get("https://jobapi.crmpannel.site/auth/v1/users", {
+          headers: { Authorization: `Bearer ${authToken}` },
+        });
+        
+        setResumes(response.data.data);
+      } catch (error) {
         console.error("Error fetching resumes:", error);
-      });
-  }, []);
+      }
+    };
+  
+    fetchResumes();
+  }, []); 
 
   const handleDownload = (resumeLink) => {
     window.open(resumeLink, "_blank");
@@ -38,7 +41,7 @@ const ResumeDetails = () => {
             </tr>
           </thead>
           <tbody>
-            {resumes.map((resume, index) => (
+            {resumes?.map((resume, index) => (
               <tr key={resume.id}>
                 <td>{index + 1}</td>
                 <td>{resume.name}</td>

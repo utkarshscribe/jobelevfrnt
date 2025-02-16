@@ -13,9 +13,9 @@ export const sendOtp = async (email) => {
   }
 };
 
-export const register = async (email, fullName, mobile) => {
+export const register = async (email, fullName, phone, profileType) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/register`, { email, fullName, mobile });
+      const response = await axios.post(`${API_BASE_URL}/register`, { email, fullName, phone, profileType });
       return response.data;
     } catch (error) {
       console.error("Error sending OTP:", error);

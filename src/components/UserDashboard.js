@@ -14,7 +14,7 @@ import Resume from "./ResumeBuilder.js";
 const UserDashboard = () => {
   const navigate = useNavigate(); // Hook to navigate between pages
 
-  const [role, setrole] = useState("employer");
+  const [role, setrole] = useState("user");
 
   const handleLogout = () => {
     localStorage.removeItem("authToken"); // Remove token from storage
@@ -31,7 +31,7 @@ const UserDashboard = () => {
 
       try {
         const response = await getUser(token);
-        //  setrole(response?.data?.profileType); 
+          setrole(response?.data?.profileType); 
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
