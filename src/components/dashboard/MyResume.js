@@ -37,15 +37,16 @@ const MyResume = () => {
 
   const authToken = localStorage.getItem("authToken");
 
-  // Fetch user resume data from your API when the component mounts.
+  
   useEffect(() => {
     axios
-      .get("https://jobapi.crmpannel.site/api/v1/myresume", {
+      .get("https://jobapi.crmpannel.site/auth/v1/user", {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => {
         if (response.data) {
-          setResumeData(response.data);
+          console.log(response);
+          setResumeData(response.data.data);
         }
       })
       .catch((error) =>
@@ -111,11 +112,12 @@ const MyResume = () => {
           "Content-Type": "application/json",
         },
       })
-      .then(() => setEditing(false))
+      .then(() => setEditing(false)
+    )
       .catch((error) =>
         console.error("Error updating resume:", error)
       );
-  };
+    window.location.reload();};
 
   const downloadPDF = () => {
     const doc = new jsPDF();

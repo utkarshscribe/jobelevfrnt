@@ -11,6 +11,16 @@ const LoginPage = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+   
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        navigate("/dashboard"); // Redirect to dashboard if already logged in
+        return;
+      }
+  }, []);
+
+
   // Handle sending OTP
   const handleSendOtp = async (e) => {
     e.preventDefault();

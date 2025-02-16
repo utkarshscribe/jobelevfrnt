@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { register, sendOtp, verifyOtp } from "../services/authService";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
   const [name, setName] = useState("");
@@ -12,6 +12,17 @@ const SignupPage = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [profileType, setProfileType] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+     
+        const token = localStorage.getItem("authToken");
+        if (token) {
+          navigate("/dashboard"); // Redirect to dashboard if already logged in
+          return;
+        }
+    }, []);
+  
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
