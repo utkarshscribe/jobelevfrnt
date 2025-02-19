@@ -9,6 +9,8 @@ import { getUser } from "../services/authService.js";
 import JobUpload from "./admin/JobUpload";
 import AdminComplaints from "./admin/AdminComplaints";
 //import ResumeDetails from "./admin/ResumeDetails";
+import HireForMe from "./dashboard/HireForMe";
+import HireMe from "./admin/HireMe";
 import Resume from "./ResumeBuilder.js";
 
 const UserDashboard = () => {
@@ -139,6 +141,34 @@ const UserDashboard = () => {
               </NavLink>
             </li>
           )}
+          {role === "admin" ? (
+            <li className="nav-item">
+              <NavLink
+                to="/dashboard/hiremes"
+                className={({ isActive }) =>
+                  `nav-link d-flex align-items-center px-3 py-2 rounded ${
+                    isActive ? "bg-primary text-white" : "text-white-50"
+                  }`
+                }
+              >
+                <i className="bi bi-exclamation-circle me-2"></i>
+                Hire Me
+              </NavLink>
+            </li>
+          ) : (
+            <li className="nav-item mb-3">
+              <NavLink
+                to="/dashboard/hireme"
+                className={({ isActive }) =>
+                  "nav-link d-flex align-items-center px-3 py-2 rounded " +
+                  (isActive ? "bg-primary text-white" : "text-white-50")
+                }
+              >
+                <i className="bi bi-exclamation-circle me-2"></i>
+                Hire For Me
+              </NavLink>
+            </li>
+          )}
         </ul>
       </aside>
 
@@ -169,7 +199,8 @@ const UserDashboard = () => {
                   
                   <Route path="job" element={<JobUpload />} />
                   <Route path="complaints" element={<AdminComplaints />} />
-                 
+                  <Route path="hireme" element={<HireForMe />} />
+                  <Route path="hiremes" element={<HireMe />} />
                   <Route path="resume" element={<MyResume />} />
                   <Route path="complaint" element={<UserComplaints />} />
                   <Route path="jobs" element={<UserJobs />} />
