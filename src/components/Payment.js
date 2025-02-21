@@ -36,11 +36,12 @@ const Payment = () => {
                 
                 }
               );
-        console.log( localStorage.getItem("authToken"));      
+        console.log( localStorage.getItem("authToken"));   
+        
      console.log( order);
             const options = {
                 key: "rzp_test_33IoIdjYWhJxb8",
-                amount: order.amount,
+                amount: order.amount*100,
                 currency: order.currency,
                 name: "Your Company",
                 description: "Secure Online Payment",
