@@ -39,7 +39,7 @@ const Payment = () => {
         console.log( localStorage.getItem("authToken"));      
      console.log( order);
             const options = {
-                key: "your_razorpay_key_id",
+                key: "rzp_test_33IoIdjYWhJxb8",
                 amount: order.amount,
                 currency: order.currency,
                 name: "Your Company",
@@ -51,7 +51,7 @@ const Payment = () => {
                         RAZORPAY_KEY_SECRET:"wJGkODzUJ7sm9ehDtkxkUvl4",
                         razorpay_signature: response.razorpay_signature
                     });
-
+                    console.log(verifyResponse);
                     if (verifyResponse.data.success) {
                         alert("Payment Successful!");
                     } else {
