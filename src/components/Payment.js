@@ -5,14 +5,39 @@ import { Container, Card, CardBody, CardTitle, FormGroup, Label, Input, Button }
 const Payment = () => {
     const [profileType, setProfileType] = useState("user");
     const [amount, setAmount] = useState(300);
+    
+    const loadRazorpayScript = (src) => {
+        return new Promise((resolve) => {
+          const script = document.createElement("script");
+          script.src = src;
+          script.onload = () => resolve(true);
+          script.onerror = () => resolve(false);
+          document.body.appendChild(script);
+        });
+      };
 
+    const authToken = localStorage.getItem("authToken");
     const handlePayment = async () => {
+        const res = await loadRazorpayScript("https://checkout.razorpay.com/v1/checkout.js");
+        if (!res) {
+            alert("Razorpay SDK failed to load. Are you online?");
+            return;
+          }
         try {
-            const { data: order } = await axios.post("http://localhost:5000/api/payment/pay", {
-                profileType,
-                amount
-            });
-
+            const { data: order } = await axios.post(
+                "https://jobapi.crmpannel.site/auth/v1/pay", 
+                {
+                  amount
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${authToken}`
+                  }
+                
+                }
+              );
+        console.log( localStorage.getItem("authToken"));      
+     console.log( order);
             const options = {
                 key: "your_razorpay_key_id",
                 amount: order.amount,
@@ -21,9 +46,9 @@ const Payment = () => {
                 description: "Secure Online Payment",
                 order_id: order.id,
                 handler: async function (response) {
-                    const verifyResponse = await axios.post("http://localhost:5000/api/payment/verifyPay", {
-                        razorpay_order_id: response.razorpay_order_id,
-                        razorpay_payment_id: response.razorpay_payment_id,
+                    const verifyResponse = await axios.post("https://jobapi.crmpannel.site/auth/v1/verify-pay", {
+                        RAZORPAY_KEY_ID:"rzp_test_33IoIdjYWhJxb8",
+                        RAZORPAY_KEY_SECRET:"wJGkODzUJ7sm9ehDtkxkUvl4",
                         razorpay_signature: response.razorpay_signature
                     });
 
