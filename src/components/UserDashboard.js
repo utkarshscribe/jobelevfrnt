@@ -12,6 +12,7 @@ import AdminComplaints from "./admin/AdminComplaints";
 import HireForMe from "./dashboard/HireForMe";
 import HireMe from "./admin/HireMe";
 import Resume from "./ResumeBuilder.js";
+import PlaneDetails from "./PlaneDetails.js";
 
 const UserDashboard = () => {
   const navigate = useNavigate(); // Hook to navigate between pages
@@ -196,7 +197,7 @@ const UserDashboard = () => {
             <div className="card shadow-sm">
               <div className="card-body">
                 <Routes>
-                  
+                  <Route path="/#" element={<PlaneDetails />} />
                   <Route path="job" element={<JobUpload />} />
                   <Route path="complaints" element={<AdminComplaints />} />
                   <Route path="hireme" element={<HireForMe />} />

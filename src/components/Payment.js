@@ -41,17 +41,23 @@ const Payment = () => {
      console.log( order);
             const options = {
                 key: "rzp_test_33IoIdjYWhJxb8",
-                amount: order.amount*100,
+                amount: order.amount,
                 currency: order.currency,
-                name: "Your Company",
+                name: "Job Elevator - Advertrone",
                 description: "Secure Online Payment",
                 order_id: order.id,
                 handler: async function (response) {
                     const verifyResponse = await axios.post("https://jobapi.crmpannel.site/auth/v1/verify-pay", {
                         RAZORPAY_KEY_ID:"rzp_test_33IoIdjYWhJxb8",
                         RAZORPAY_KEY_SECRET:"wJGkODzUJ7sm9ehDtkxkUvl4",
-                        razorpay_signature: response.razorpay_signature
-                    });
+                        razorpay_signature: response.razorpay_signature,
+                        amount: order.amount
+                    },
+                    {
+                        headers: {
+                          Authorization: `Bearer ${authToken}`
+                        } 
+                      });
                     console.log(verifyResponse);
                     if (verifyResponse.data.success) {
                         alert("Payment Successful!");
@@ -87,7 +93,10 @@ const Payment = () => {
                             type="select" 
                             id="profileType" 
                             value={profileType} 
-                            onChange={(e) => setProfileType(e.target.value)}
+                            onChange={(e) =>{
+                                setProfileType(e.target.value)
+                                e.target.value==="user" && setAmount(149)}
+                                }
                             className="form-select"
                         >
                             <option value="user">User Plan - ₹149 + GST</option>
@@ -102,7 +111,7 @@ const Payment = () => {
                                 id="amount" 
                                 value={amount} 
                                 onChange={(e) => setAmount(e.target.value)} 
-                                min={300} 
+                                
                                 className="form-control"
                             />
                         </FormGroup>
