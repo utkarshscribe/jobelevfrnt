@@ -48,7 +48,7 @@ const ResumeDetails = () => {
   const handleViewResume = async (id) => {
     try {
       // Fetch resume details
-      const response = await axios.get(`https://jobapi.crmpannel.site/auth/v1/user`, {
+      const response = await axios.get(`https://jobapi.crmpannel.site/auth/v1/user/${id}`, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
   

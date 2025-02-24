@@ -56,6 +56,20 @@ const UserDashboard = () => {
           <h4 className="fw-bold">{capitalizeFirstLetter(role) } Dashboard</h4>
         </div>
         <ul className="nav flex-column">
+        {(role === "user" || role === "employer") && (
+    <li className="nav-item mb-3">
+      <NavLink
+        to="/dashboard/planedetails"
+        className={({ isActive }) =>
+          "nav-link d-flex align-items-center px-3 py-2 rounded " +
+          (isActive ? "bg-primary text-white" : "text-white-50")
+        }
+      >
+        <i className="bi bi-credit-card me-2"></i>
+        Plan Details
+      </NavLink>
+    </li>
+  )}
           {role === "user" && (
             <li className="nav-item mb-3">
               <NavLink
@@ -94,7 +108,7 @@ const UserDashboard = () => {
                 }
               >
                 <i className="bi bi-briefcase me-2"></i>
-                All Resume
+                Candidates
               </NavLink>
             </li>
           )}
@@ -170,20 +184,7 @@ const UserDashboard = () => {
               </NavLink>
             </li>
           )}
-          {(role === "user" || role === "employer") && (
-    <li className="nav-item mb-3">
-      <NavLink
-        to="/dashboard/planedetails"
-        className={({ isActive }) =>
-          "nav-link d-flex align-items-center px-3 py-2 rounded " +
-          (isActive ? "bg-primary text-white" : "text-white-50")
-        }
-      >
-        <i className="bi bi-credit-card me-2"></i>
-        Plan Details
-      </NavLink>
-    </li>
-  )}
+         
         </ul>
       </aside>
 

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const PlaneDetails = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [userType, setUserType] = useState(""); // 'user' or 'employer'
+  const [userType, setUserType] = useState("employer"); // 'user' or 'employer'
   const [balance, setBalance] = useState(null); // Store balance details
   const navigate = useNavigate();
+  const authToken = localStorage.getItem("authToken");
 
   useEffect(() => {
     const storedUserType = localStorage.getItem("userType");
@@ -16,29 +18,23 @@ const PlaneDetails = () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${authToken}`,
       },
+      
     })
       .then((res) => res.json())
       .then((data) => {
-        setUserData(data);
+        setUserData(data.data);
         setLoading(false);
+        console.log(data);
       })
       .catch((err) => {
         console.error("Error fetching user data:", err);
         setLoading(false);
       });
 
-    fetch("https://jobapi.crmpannel.site/auth/v1/user/:id", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setBalance(data))
-      .catch((err) => console.error("Error fetching balance:", err));
+
+      
   }, []);
 
   if (loading) return <p>Loading...</p>;
@@ -48,36 +44,17 @@ const PlaneDetails = () => {
     <div className="p-4 bg-white shadow-md rounded-lg">
       <h2 className="text-xl font-bold mb-4">Subscription Details</h2>
       <div className="p-4 border rounded-lg bg-gray-100">
-        <p>
-          <strong>Expiry Date:</strong> {userData.expiry_date || "Not Available"}
-        </p>
-
-        {userType === "employer" && userData.paymentDetails && (
           <div className="mt-4">
-            <h3 className="text-lg font-semibold">Payment Details</h3>
-            <p>
-              <strong>Payment ID:</strong> {userData.paymentDetails.id || "N/A"}
+            
+           {( userData?.profileType === "user" &&  <p>
+            <strong>Expiry Date:</strong> {moment(userData.expiry).format('DD-MM-YYYY') || "Not Available"}
+            </p>)}
+            {( userData?.profileType === "employer" &&  <p>
+              <strong>Current Balance:</strong> ₹{userData.balance || "0.00"}
             </p>
-            <p>
-              <strong>Amount Paid:</strong> ₹{userData.paymentDetails.amount / 100 || "N/A"}
-            </p>
-            <p>
-              <strong>Status:</strong> {userData.paymentDetails.status || "N/A"}
-            </p>
+            )}
           </div>
-        )}
-
-        {balance && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Balance Details</h3>
-            <p>
-              <strong>Current Balance:</strong> ₹{balance.amount || "0.00"}
-            </p>
-            <p>
-              <strong>Last Transaction:</strong> {balance.last_transaction || "N/A"}
-            </p>
-          </div>
-        )}
+       
       </div>
       
       
