@@ -170,6 +170,20 @@ const UserDashboard = () => {
               </NavLink>
             </li>
           )}
+          {(role === "user" || role === "employer") && (
+    <li className="nav-item mb-3">
+      <NavLink
+        to="/dashboard/planedetails"
+        className={({ isActive }) =>
+          "nav-link d-flex align-items-center px-3 py-2 rounded " +
+          (isActive ? "bg-primary text-white" : "text-white-50")
+        }
+      >
+        <i className="bi bi-credit-card me-2"></i>
+        Plan Details
+      </NavLink>
+    </li>
+  )}
         </ul>
       </aside>
 
@@ -197,7 +211,7 @@ const UserDashboard = () => {
             <div className="card shadow-sm">
               <div className="card-body">
                 <Routes>
-                  <Route path="/#" element={<PlaneDetails />} />
+                  <Route path="planedetails" element={<PlaneDetails />} />
                   <Route path="job" element={<JobUpload />} />
                   <Route path="complaints" element={<AdminComplaints />} />
                   <Route path="hireme" element={<HireForMe />} />
