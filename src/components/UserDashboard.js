@@ -156,7 +156,7 @@ const UserDashboard = () => {
               </NavLink>
             </li>
           )}
-          {role === "admin" ? (
+          {role === "admin" && (
             <li className="nav-item">
               <NavLink
                 to="/dashboard/hiremes"
@@ -170,7 +170,8 @@ const UserDashboard = () => {
                 Hire Me
               </NavLink>
             </li>
-          ) : (
+          )}
+           {role === "employer" && (
             <li className="nav-item mb-3">
               <NavLink
                 to="/dashboard/hireme"
@@ -184,7 +185,19 @@ const UserDashboard = () => {
               </NavLink>
             </li>
           )}
-         
+          {role === "user"  && 
+          <li className="nav-item mb-3">
+  <NavLink
+    className={({ isActive }) =>
+      "nav-link d-flex align-items-center px-3 py-2 rounded text-white-50"
+    }
+    onClick={() => window.open("https://sb-auth.skillsbuild.org/", "_blank")}
+  >
+    <i className="bi bi-box-arrow-in-right me-2"></i>
+    Skills Development
+  </NavLink>
+</li>
+          }
         </ul>
       </aside>
 
@@ -212,7 +225,8 @@ const UserDashboard = () => {
             <div className="card shadow-sm">
               <div className="card-body">
                 <Routes>
-                  <Route path="planedetails" element={<PlaneDetails />} />
+                
+                  <Route path="*" element={<PlaneDetails />} />
                   <Route path="job" element={<JobUpload />} />
                   <Route path="complaints" element={<AdminComplaints />} />
                   <Route path="hireme" element={<HireForMe />} />

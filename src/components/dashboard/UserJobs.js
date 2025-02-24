@@ -5,7 +5,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const UserJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
-  const [filters, setFilters] = useState({ title: "", company: "", state: "", city: "", salary: "", type: "" });
+  const [filters, setFilters] = useState({
+    title: "",
+    company: "",
+    state: "",
+    city: "",
+    salary: "",
+    type: "",
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 5;
   const token = localStorage.getItem("authToken");
@@ -49,56 +56,67 @@ const UserJobs = () => {
   const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
 
   return (
-    <div className="container">
-      <h2 className="mb-4">Available Jobs</h2>
+    <div className="container mt-5">
+      <h2 className="mb-4 text-center text-primary">Find Your Dream Job</h2>
 
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            {Object.keys(filters).map((key) => (
-              <th key={key}>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
-                  value={filters[key]}
-                  onChange={(e) => setFilters({ ...filters, [key]: e.target.value })}
-                />
-              </th>
-            ))}
-          </tr>
-          <tr>
-            <th>Job Title</th>
-            <th>Company</th>
-            <th>State</th>
-            <th>City</th>
-            <th>Salary</th>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentJobs.length > 0 ? (
-            currentJobs.map((job, index) => (
-              <tr key={index}>
-                <td>{job.title}</td>
-                <td>{job.company}</td>
-                <td>{job.state}</td>
-                <td>{job.city}</td>
-                <td>{job.salary}</td>
-                <td>{job.type}</td>
-              </tr>
-            ))
-          ) : (
+      {/* Filter Section */}
+      <div className="card p-3 mb-4 shadow-sm">
+        <div className="row">
+          {Object.keys(filters).map((key) => (
+            <div key={key} className="col-md-2 mb-2">
+              <input
+                type="text"
+                className="form-control"
+                placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
+                value={filters[key]}
+                onChange={(e) => setFilters({ ...filters, [key]: e.target.value })}
+              />
+            </div>
+          ))}
+        </div>
+        <div className="d-flex justify-content-center mt-3">
+          <button className="btn btn-primary me-2 px-4" onClick={applyFilters}>
+            <i className="bi bi-filter"></i> Apply Filters
+          </button>
+          <button className="btn btn-secondary px-4" onClick={clearFilters}>
+            <i className="bi bi-x-circle"></i> Clear Filters
+          </button>
+        </div>
+      </div>
+
+      {/* Job Listings Table */}
+      <div className="table-responsive">
+        <table className="table table-hover shadow-sm">
+          <thead className="table-dark">
             <tr>
-              <td colSpan="6" className="text-center">No jobs found.</td>
+              <th>Job Title</th>
+              <th>Company</th>
+              <th>State</th>
+              <th>City</th>
+              <th>Salary</th>
+              <th>Type</th>
+              
             </tr>
-          )}
-        </tbody>
-      </table>
-
-      <div className="d-flex justify-content-between mb-3">
-        <button className="btn btn-success" onClick={applyFilters}>Filter</button>
-        <button className="btn btn-secondary" onClick={clearFilters}>Clear</button>
+          </thead>
+          <tbody>
+            {currentJobs.length > 0 ? (
+              currentJobs.map((job, index) => (
+                <tr key={index}>
+                  <td>{job.title}</td>
+                  <td>{job.company}</td>
+                  <td>{job.state}</td>
+                  <td>{job.city}</td>
+                  <td>{job.salary}</td>
+                  <td>{job.type}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7" className="text-center">No jobs found.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
       {/* Pagination Controls */}
