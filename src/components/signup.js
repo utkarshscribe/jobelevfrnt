@@ -24,28 +24,49 @@ const SignupPage = () => {
     }, []);
   
 
-  const handleSendOtp = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
-
-    try {
-      const response = await register(email, name, mobile, profileType);
-      if (response.success) {
-        setOtpSent(true);
-        setMessage("OTP sent to your email.");
-        localStorage.setItem("authToken", response.userToken);
-        window.location.href = "/dashboard";
-      } else {
-        setMessage(response.message || "Failed to send OTP.");
+    const handleSendOtp = async (e) => {
+      e.preventDefault();
+      setLoading(true);
+      setMessage("");
+    
+      try {
+        const response = await register(email, name, mobile, profileType);
+        if (response.success) {
+          setOtpSent(true);
+          setMessage("OTP sent to your email.");
+          localStorage.setItem("authToken", response.userToken);
+          localStorage.setItem("userType", profileType);
+          localStorage.setItem("userName", name);
+          localStorage.setItem("userEmail", email);
+          localStorage.setItem("userMobile", mobile);
+    
+          // Fetch user details from API (if needed)
+          const userResponse = await fetch("https://jobapi.crmpannel.site/auth/v1/user", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${response.userToken}`,
+            },
+          });
+          const userData = await userResponse.json();
+    
+          if (userData.data) {
+            localStorage.setItem("expiry", userData.data.expiry || "Not Available");
+            localStorage.setItem("balance", userData.data.balance || "0.00");
+          }
+    
+          window.location.href = "/dashboard";
+        } else {
+          setMessage(response.message || "Failed to send OTP.");
+        }
+      } catch (error) {
+        setMessage("Invalid email or email already exists.");
+        console.log(error.response);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      setMessage("Invalid email or email already exists.");
-      console.log(error.response)
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+    
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();

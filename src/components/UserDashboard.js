@@ -66,7 +66,7 @@ const UserDashboard = () => {
         }
       >
         <i className="bi bi-credit-card me-2"></i>
-        Plan Details
+        Profile
       </NavLink>
     </li>
   )}
