@@ -12,77 +12,54 @@ const SignupPage = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [profileType, setProfileType] = useState("");
+
+  // Additional fields for employer
+  const [gst, setGst] = useState("");
+  const [companyId, setCompanyId] = useState("");
+  const [pucName, setPucName] = useState("");
+  const [pucEmail, setPucEmail] = useState("");
+  const [pucPhone, setPucPhone] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
-     
-        const token = localStorage.getItem("authToken");
-        if (token) {
-          navigate("/dashboard"); // Redirect to dashboard if already logged in
-          return;
-        }
-    }, []);
-  
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      navigate("/dashboard"); // Redirect to dashboard if already logged in
+      return;
+    }
+  }, []);
 
-    const handleSendOtp = async (e) => {
-      e.preventDefault();
-      setLoading(true);
-      setMessage("");
-    
-      try {
-        const response = await register(email, name, mobile, profileType);
-        if (response.success) {
-          setOtpSent(true);
-          setMessage("OTP sent to your email.");
-          localStorage.setItem("authToken", response.userToken);
-          localStorage.setItem("userType", profileType);
-          localStorage.setItem("userName", name);
-          localStorage.setItem("userEmail", email);
-          localStorage.setItem("userMobile", mobile);
-    
-          // Fetch user details from API (if needed)
-          const userResponse = await fetch("https://jobapi.crmpannel.site/auth/v1/user", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${response.userToken}`,
-            },
-          });
-          const userData = await userResponse.json();
-    
-          if (userData.data) {
-            localStorage.setItem("expiry", userData.data.expiry || "Not Available");
-            localStorage.setItem("balance", userData.data.balance || "0.00");
-          }
-    
-          window.location.href = "/dashboard";
-        } else {
-          setMessage(response.message || "Failed to send OTP.");
-        }
-      } catch (error) {
-        setMessage("Invalid email or email already exists.");
-        console.log(error.response);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-
-  const handleVerifyOtp = async (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
     try {
-      const response = await verifyOtp(email, otp);
-      if (response.status) {
-        setMessage("Signup successful!");
-        alert("Signup successful!");
+      const response = await register(email, name, mobile, profileType, gst, companyId, pucName, pucEmail, pucPhone);
+      if (response.success) {
+        setOtpSent(true);
+        setMessage("OTP sent to your email.");
+        localStorage.setItem("authToken", response.userToken);
+        localStorage.setItem("userType", profileType);
+        localStorage.setItem("userName", name);
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userMobile", mobile);
+        if (profileType === "employer") {
+          localStorage.setItem("gst", gst);
+          localStorage.setItem("companyId", companyId);
+          localStorage.setItem("pucName", pucName);
+          localStorage.setItem("pucEmail", pucEmail);
+          localStorage.setItem("pucPhone", pucPhone);
+        }
+
+        window.location.href = "/dashboard";
       } else {
-        setMessage(response.message || "Invalid OTP.");
+        setMessage(response.message || "Failed to send OTP.");
       }
     } catch (error) {
-      setMessage("Invalid OTP");
+      setMessage("Invalid email or email already exists.");
+      console.log(error.response);
     } finally {
       setLoading(false);
     }
@@ -93,7 +70,7 @@ const SignupPage = () => {
       <div className="card p-4 shadow-lg" style={{ width: "400px" }}>
         <h2 className="text-center mb-4">Sign Up</h2>
 
-        <form onSubmit={otpSent ? handleVerifyOtp : handleSendOtp}>
+        <form onSubmit={handleSendOtp}>
           <div className="mb-3">
             <input
               type="text"
@@ -102,26 +79,81 @@ const SignupPage = () => {
               onChange={(e) => setName(e.target.value)}
               className="form-control"
               required
-              disabled={otpSent}
             />
           </div>
 
           <div className="mb-3">
             <select
-              type="text"
-              placeholder="Full Name"
               value={profileType}
               onChange={(e) => setProfileType(e.target.value)}
               className="form-control"
               required
-              disabled={otpSent}
-            ><option value="">Select Profile Type</option>
-              <option 
-            value="user">Candidate</option>
+            >
+              <option value="">Select Profile Type</option>
+              <option value="user">Candidate</option>
               <option value="employer">Employer</option>
             </select>
           </div>
 
+          {/* Additional fields for employer */}
+          {profileType === "employer" && (
+            <>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  placeholder="GST ID"
+                  value={gst}
+                  onChange={(e) => setGst(e.target.value)}
+                  className="form-control"
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <input
+                  type="text"
+                  placeholder="Company ID"
+                  value={companyId}
+                  onChange={(e) => setCompanyId(e.target.value)}
+                  className="form-control"
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <input
+                  type="text"
+                  placeholder="PUC Name"
+                  value={pucName}
+                  onChange={(e) => setPucName(e.target.value)}
+                  className="form-control"
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <input
+                  type="email"
+                  placeholder="PUC Email"
+                  value={pucEmail}
+                  onChange={(e) => setPucEmail(e.target.value)}
+                  className="form-control"
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <input
+                  type="tel"
+                  placeholder="PUC Phone"
+                  value={pucPhone}
+                  onChange={(e) => setPucPhone(e.target.value)}
+                  className="form-control"
+                  required
+                />
+              </div>
+            </>
+          )}
 
           <div className="mb-3">
             <input
@@ -131,7 +163,6 @@ const SignupPage = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="form-control"
               required
-              disabled={otpSent}
             />
           </div>
 
@@ -142,27 +173,13 @@ const SignupPage = () => {
               value={mobile}
               onChange={(e) => setMobile(e.target.value)}
               className="form-control"
-              disabled={otpSent}
             />
           </div>
-
-          {otpSent && (
-            <div className="mb-3">
-              <input
-                type="text"
-                placeholder="Enter OTP"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                className="form-control"
-                required
-              />
-            </div>
-          )}
 
           {message && <p className="text-center text-danger">{message}</p>}
 
           <button type="submit" className="btn btn-success w-100" disabled={loading}>
-            {loading ? "Processing..." : otpSent ? "Verify OTP" : "Send OTP"}
+            {loading ? "Processing..." : "Send OTP"}
           </button>
 
           <p className="text-center mt-3">

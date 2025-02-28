@@ -30,10 +30,7 @@ const ResumeDetails = () => {
 
   const fetchResumes = async (type) => {
     try {
-      const apiUrl =
-        type === "Users"
-          ? "https://jobapi.crmpannel.site/auth/v1/users"
-          : "https://jobapi.crmpannel.site/auth/v1/employers";
+      const apiUrl = "https://jobapi.crmpannel.site/auth/v1/userbyemp";
 
       const response = await axios.get(apiUrl, {
         headers: { Authorization: `Bearer ${authToken}` },
@@ -48,12 +45,14 @@ const ResumeDetails = () => {
   const handleViewResume = async (id) => {
     try {
       // Fetch resume details
-      const response = await axios.get(`https://jobapi.crmpannel.site/auth/v1/user/${id}`, {
+      const response = await axios.get(`https://jobapi.crmpannel.site/auth/v1/users`, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
   
       const resume = response.data;
   
+
+      
       // Open a new blank tab
       const newTab = window.open("", "_blank");
   
@@ -139,22 +138,7 @@ const ResumeDetails = () => {
       <CardBody>
         <div className="d-flex justify-content-between align-items-center">
           <CardTitle tag="h5">Candidate Resumes</CardTitle>
-          <div className="d-flex">
-            <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
-              <DropdownToggle caret>{selectedType}</DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem onClick={() => setSelectedType("Users")}>
-                  Users
-                </DropdownItem>
-                <DropdownItem onClick={() => setSelectedType("Employers")}>
-                  Employers
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-            <Button color="success" className="ms-3" onClick={() => navigate("/dashboard")}>
-              Go to Dashboard
-            </Button>
-          </div>
+          
         </div>
 
         <Table bordered className="mt-3">

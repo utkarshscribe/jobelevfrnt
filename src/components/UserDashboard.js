@@ -13,6 +13,7 @@ import HireForMe from "./dashboard/HireForMe";
 import HireMe from "./admin/HireMe";
 import Resume from "./ResumeBuilder.js";
 import PlaneDetails from "./PlaneDetails.js";
+import ViewedResumes from "./ViewedResumes.js";
 
 const UserDashboard = () => {
   const navigate = useNavigate(); // Hook to navigate between pages
@@ -99,19 +100,35 @@ const UserDashboard = () => {
             </li>
           )}
           {role !== "user" && (
-            <li className="nav-item mb-3">
-              <NavLink
-                to="/dashboard/resumes"
-                className={({ isActive }) =>
-                  "nav-link d-flex align-items-center px-3 py-2 rounded " +
-                  (isActive ? "bg-primary text-white" : "text-white-50")
-                }
-              >
-                <i className="bi bi-briefcase me-2"></i>
-                Candidates
-              </NavLink>
-            </li>
-          )}
+  <li className="nav-item mb-3">
+    <NavLink
+      to="/dashboard/resumes"
+      className={({ isActive }) =>
+        "nav-link d-flex align-items-center px-3 py-2 rounded " +
+        (isActive ? "bg-primary text-white" : "text-white-50")
+      }
+    >
+      <i className="bi bi-briefcase me-2"></i>
+      Candidates
+    </NavLink>
+
+    {/* New Candidate Resumes Button under Candidates */}
+    <ul className="list-unstyled ms-4">
+      <li>
+        <NavLink
+          to="/dashboard/candidate-resumes"
+          className={({ isActive }) =>
+            "nav-link d-flex align-items-center px-3 py-2 rounded " +
+            (isActive ? "bg-secondary text-white" : "text-white-50")
+          }
+        >
+          <i className="bi bi-file-earmark-text me-2"></i>
+          Candidate Resumes
+        </NavLink>
+      </li>
+    </ul>
+  </li>
+)}
 
           {role !== "user" && (
             <li className="nav-item">
@@ -235,6 +252,7 @@ const UserDashboard = () => {
                   <Route path="complaint" element={<UserComplaints />} />
                   <Route path="jobs" element={<UserJobs />} />
                   <Route path="resumes" element={<Resume />} />
+                  <Route path="candidate-resumes" element={<ViewedResumes />} />
                   
                 </Routes>
               </div>
