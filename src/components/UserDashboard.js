@@ -44,7 +44,7 @@ const UserDashboard = () => {
   }, []);
 
   function capitalizeFirstLetter(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    return str?.charAt(0)?.toUpperCase() + str?.slice(1);
 }
 
   return (
@@ -99,7 +99,7 @@ const UserDashboard = () => {
               </NavLink>
             </li>
           )}
-          {role !== "user" && (
+          {role === "employer" && (
   <li className="nav-item mb-3">
     <NavLink
       to="/dashboard/resumes"
@@ -174,9 +174,10 @@ const UserDashboard = () => {
             </li>
           )}
           {role === "admin" && (
+            <>
             <li className="nav-item">
               <NavLink
-                to="/dashboard/hiremes"
+                to="/add-users"
                 className={({ isActive }) =>
                   `nav-link d-flex align-items-center px-3 py-2 rounded ${
                     isActive ? "bg-primary text-white" : "text-white-50"
@@ -184,9 +185,36 @@ const UserDashboard = () => {
                 }
               >
                 <i className="bi bi-exclamation-circle me-2"></i>
-                Hire Me
+                Add Users
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink
+                to="/users"
+                className={({ isActive }) =>
+                  `nav-link d-flex align-items-center px-3 py-2 rounded ${
+                    isActive ? "bg-primary text-white" : "text-white-50"
+                  }`
+                }
+              >
+                <i className="bi bi-exclamation-circle me-2"></i>
+                All Users
+              </NavLink>
+            </li>
+            <li className="nav-item">
+            <NavLink
+              to="/dashboard/hiremes"
+              className={({ isActive }) =>
+                `nav-link d-flex align-items-center px-3 py-2 rounded ${
+                  isActive ? "bg-primary text-white" : "text-white-50"
+                }`
+              }
+            >
+              <i className="bi bi-exclamation-circle me-2"></i>
+              Hire Me
+            </NavLink>
+          </li>
+          </>
           )}
            {role === "employer" && (
             <li className="nav-item mb-3">
@@ -252,6 +280,8 @@ const UserDashboard = () => {
                   <Route path="complaint" element={<UserComplaints />} />
                   <Route path="jobs" element={<UserJobs />} />
                   <Route path="resumes" element={<Resume />} />
+                  <Route path="users" element={<Resume />} />
+                  <Route path="add-users" element={<Resume />} />
                   <Route path="candidate-resumes" element={<ViewedResumes />} />
                   
                 </Routes>

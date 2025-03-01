@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Container, Card, CardBody, CardTitle, FormGroup, Label, Input, Button } from "reactstrap";
+import { useParams } from "react-router-dom";
 
 const Payment = () => {
-    const [profileType, setProfileType] = useState("user");
+    const {profileType} = useParams();
     const [amount, setAmount] = useState(300);
     
     const loadRazorpayScript = (src) => {
@@ -87,22 +88,12 @@ const Payment = () => {
             <Card className="shadow-lg border-0" style={{ width: "450px", borderRadius: "12px" }}>
                 <CardBody>
                     <CardTitle tag="h3" className="text-center mb-4 text-primary">Payment Options</CardTitle>
-                    <FormGroup>
-                        <Label for="profileType" className="fw-bold">Select Plan</Label>
-                        <Input 
-                            type="select" 
-                            id="profileType" 
-                            value={profileType} 
-                            onChange={(e) =>{
-                                setProfileType(e.target.value)
-                                e.target.value==="user" && setAmount(149)}
-                                }
-                            className="form-select"
-                        >
-                            <option value="user">User Plan - ₹149 + GST</option>
-                            <option value="employer">Employer Recharge</option>
-                        </Input>
-                    </FormGroup>
+                    {profileType === "user" && (
+                        <>
+                        <h4>User Plan</h4>
+                        <p>Rs. 149/- + 18% gst</p></>
+                    )}
+
                     {profileType === "employer" && (
                         <FormGroup>
                             <Label for="amount" className="fw-bold">Enter Amount</Label>

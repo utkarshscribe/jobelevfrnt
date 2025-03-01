@@ -45,7 +45,7 @@ const ResumeDetails = () => {
   const handleViewResume = async (id) => {
     try {
       // Fetch resume details
-      const response = await axios.get(`https://jobapi.crmpannel.site/auth/v1/users`, {
+      const response = await axios.get(`https://jobapi.crmpannel.site/auth/v1/user/${id}`, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
   
@@ -117,22 +117,12 @@ const ResumeDetails = () => {
     ];
   
     doc.text(textData.join("\n"), 10, 10, { maxWidth: 180 });
-    doc.save(`${resume.fullName}_Resume.pdf`);
+    doc.save(`${resume.fullName||"noname"}_Resume.pdf`);
   };
   
   
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`https://jobapi.crmpannel.site/auth/v1/user/${id}`, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      });
-      setResumes(resumes.filter((resume) => resume.id !== id));
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }
-  };
-
+ 
   return (
     <Card>
       <CardBody>
@@ -168,11 +158,9 @@ const ResumeDetails = () => {
                 </td>
                 <td>
                   <Button color="primary" onClick={() => handleViewResume(resume._id)}>
-                    View Details
+                    Save Details
                   </Button>
-                  <Button color="danger" className="ms-2" onClick={() => handleDelete(resume.id)}>
-                    Delete
-                  </Button>
+                  
                 </td>
               </tr>
             ))}

@@ -70,7 +70,7 @@ const PlaneDetails = () => {
 
       <button
         className="btn btn-primary mt-4"
-        onClick={() => navigate("/payment")}
+        onClick={() => navigate(`/payment/${userData.profileType}`)}
       >
         Proceed to Payment
       </button>

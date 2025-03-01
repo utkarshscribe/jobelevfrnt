@@ -8,13 +8,18 @@ const ViewedResumes = () => {
   const [selectedResumes, setSelectedResumes] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const token= localStorage.getItem("authToken");
 
   useEffect(() => {
     const fetchResumes = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("https://jobapi.crmpannel.site/auth/v1/user+vieweduser");
-        setViewedResumes(response.data); // Assuming API returns an array
+        const response = await axios.get("https://jobapi.crmpannel.site/auth/v1/user", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log(response.data?.data?.viewedUsers);
+        setViewedResumes(response.data?.data?.viewedUsers
+        ); // Assuming API returns an array
       } catch (err) {
         setError(err.message);
       } finally {
