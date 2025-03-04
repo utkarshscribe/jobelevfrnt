@@ -12,8 +12,10 @@ import AdminComplaints from "./admin/AdminComplaints";
 import HireForMe from "./dashboard/HireForMe";
 import HireMe from "./admin/HireMe";
 import Resume from "./ResumeBuilder.js";
-import PlaneDetails from "./PlaneDetails.js";
+import ProfileDetails from "./ProfileDetails.js";
 import ViewedResumes from "./ViewedResumes.js";
+import BulkUser from "./BulkUser.js";
+import AlluserDetails from "./AlluserDetails.js";
 
 const UserDashboard = () => {
   const navigate = useNavigate(); // Hook to navigate between pages
@@ -32,16 +34,22 @@ const UserDashboard = () => {
         navigate("/"); 
         return;
       }
-
+  
       try {
         const response = await getUser(token);
-          setrole(response?.data?.profileType); 
+        setrole(response?.data?.profileType); 
+  
+        
+        if (response?.data?.profileType === "admin") {
+          navigate("/dashboard/jobs");
+        }
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
     checkAuth();
   }, []);
+  
 
   function capitalizeFirstLetter(str) {
     return str?.charAt(0)?.toUpperCase() + str?.slice(1);
@@ -190,7 +198,7 @@ const UserDashboard = () => {
             </li>
             <li className="nav-item">
               <NavLink
-                to="/users"
+                to="/all-users"
                 className={({ isActive }) =>
                   `nav-link d-flex align-items-center px-3 py-2 rounded ${
                     isActive ? "bg-primary text-white" : "text-white-50"
@@ -271,7 +279,7 @@ const UserDashboard = () => {
               <div className="card-body">
                 <Routes>
                 
-                  <Route path="*" element={<PlaneDetails />} />
+                {role !== "admin" && <Route path="*" element={<ProfileDetails />} />}
                   <Route path="job" element={<JobUpload />} />
                   <Route path="complaints" element={<AdminComplaints />} />
                   <Route path="hireme" element={<HireForMe />} />
@@ -280,8 +288,8 @@ const UserDashboard = () => {
                   <Route path="complaint" element={<UserComplaints />} />
                   <Route path="jobs" element={<UserJobs />} />
                   <Route path="resumes" element={<Resume />} />
-                  <Route path="users" element={<Resume />} />
-                  <Route path="add-users" element={<Resume />} />
+                  <Route path="all-users" element={<AlluserDetails />} />
+                  <Route path="add-users" element={<BulkUser />} />
                   <Route path="candidate-resumes" element={<ViewedResumes />} />
                   
                 </Routes>
