@@ -52,15 +52,17 @@ const MyResume = () => {
       .catch((error) =>
         console.error("Error fetching resume data:", error)
       );
-  }, [authToken]);
-
+  }, [authToken]); 
+  
   // Handle changes for top-level fields (fullName, email, phone, summary)
   const handleChange = (e) => {
+    console.log(`Updating ${e.target.name} to ${e.target.value}`);
     setResumeData({
       ...resumeData,
       [e.target.name]: e.target.value,
     });
   };
+  
 
   // Handle changes for nested location fields
   const handleLocationChange = (e) => {
@@ -103,6 +105,21 @@ const MyResume = () => {
     });
   };
 
+  const fetchResumeData = () => {
+    axios
+      .get("https://jobapi.crmpannel.site/auth/v1/user", {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        if (response.data) {
+          console.log(response);
+          setResumeData(response.data.data);
+        }
+      })
+      .catch((error) => console.error("Error fetching resume data:", error));
+  };
+  
+
   // Save the updated resume to your backend API.
   const saveResume = () => {
     axios
@@ -112,12 +129,22 @@ const MyResume = () => {
           "Content-Type": "application/json",
         },
       })
-      .then(() => setEditing(false)
-    )
-      .catch((error) =>
-        console.error("Error updating resume:", error)
-      );
-    window.location.reload();};
+      .then((response) => {
+        console.log("Resume updated successfully:", response.data);
+  
+        // Ensure we update the correct object structure
+        setResumeData((prevData) => ({
+          ...prevData,
+          ...response.data.data, // Adjust this based on actual API response
+        }));
+  
+        setEditing(false); // Exit edit mode
+      })
+      .catch((error) => {
+        console.error("Error updating resume:", error);
+      });
+  };
+  
 
   const downloadPDF = () => {
     const doc = new jsPDF();

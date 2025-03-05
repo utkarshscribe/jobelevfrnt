@@ -53,11 +53,43 @@ const SignupPage = () => {
       setLoading(false);
     }
   };
+  const handleVerifyOtp = async (e) => {
+      e.preventDefault();
+      setLoading(true);
+      setMessage("");
+  
+      try {
+        const response = await verifyOtp(email, otp);
+        if (response.status) {
+          localStorage.setItem("authToken", response.userToken); // Save token
+          window.location.href = "/dashboard"; // Redirect to dashboard
+        } else {
+          setMessage(response.message || "Invalid OTP.");
+        }
+      } catch (error) {
+        setMessage("Error verifying OTP. Try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
       <div className="card p-4 shadow-lg" style={{ width: "400px" }}>
         <h2 className="text-center mb-4">Sign Up</h2>
+
+        <div className="mb-3">
+            <select
+              value={profileType}
+              onChange={(e) => setProfileType(e.target.value)}
+              className="form-control"
+              required
+            >
+              <option value="">Select Profile Type</option>
+              <option value="user">Candidate</option>
+              <option value="employer">Employer</option>
+            </select>
+          </div>
 
         <form onSubmit={handleSendOtp}>
           <div className="mb-3">
@@ -72,17 +104,26 @@ const SignupPage = () => {
           </div>
 
           <div className="mb-3">
-            <select
-              value={profileType}
-              onChange={(e) => setProfileType(e.target.value)}
+            <input
+              type="email"
+              placeholder="Enter Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="form-control"
               required
-            >
-              <option value="">Select Profile Type</option>
-              <option value="user">Candidate</option>
-              <option value="employer">Employer</option>
-            </select>
+            />
           </div>
+
+          <div className="mb-3">
+            <input
+              type="tel"
+              placeholder="Mobile Number"
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+              className="form-control"
+            />
+          </div>
+
 
           {/* Additional fields for employer */}
           {profileType === "employer" && (
@@ -144,26 +185,6 @@ const SignupPage = () => {
             </>
           )}
 
-          <div className="mb-3">
-            <input
-              type="email"
-              placeholder="Enter Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="form-control"
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <input
-              type="tel"
-              placeholder="Mobile Number"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
-              className="form-control"
-            />
-          </div>
 
           {message && <p className="text-center text-danger">{message}</p>}
 

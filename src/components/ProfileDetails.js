@@ -153,7 +153,7 @@ const ProfileDetails = () => {
             </div>
 
             <div className="mb-3">
-              <label className="font-bold">PUC Name:</label>
+              <label className="font-bold">POC Name:</label>
               <input
                 type="text"
                 value={pucName}
@@ -164,7 +164,7 @@ const ProfileDetails = () => {
             </div>
 
             <div className="mb-3">
-              <label className="font-bold">PUC Email:</label>
+              <label className="font-bold">POC Email:</label>
               <input
                 type="email"
                 value={pucEmail}
@@ -175,7 +175,7 @@ const ProfileDetails = () => {
             </div>
 
             <div className="mb-3">
-              <label className="font-bold">PUC Phone:</label>
+              <label className="font-bold">POC Phone:</label>
               <input
                 type="tel"
                 value={pucPhone}
