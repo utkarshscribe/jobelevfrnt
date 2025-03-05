@@ -42,7 +42,7 @@ const ProfileDetails = () => {
           // Set initial values for editing
           setFullName(data.data.fullName || "");
           setEmail(data.data.email || "");
-          setPhone(data.data.mobile || "");
+          setPhone(data.data.phone || "");
 
           if (data.data.profileType === "employer") {
             setGst(data.data.gst || "");

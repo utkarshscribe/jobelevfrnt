@@ -40,20 +40,9 @@ const SignupPage = () => {
       if (response.success) {
         setOtpSent(true);
         setMessage("OTP sent to your email.");
-        localStorage.setItem("authToken", response.userToken);
-        localStorage.setItem("userType", profileType);
-        localStorage.setItem("userName", name);
-        localStorage.setItem("userEmail", email);
-        localStorage.setItem("userMobile", mobile);
-        if (profileType === "employer") {
-          localStorage.setItem("gst", gst);
-          localStorage.setItem("companyId", companyId);
-          localStorage.setItem("pucName", pucName);
-          localStorage.setItem("pucEmail", pucEmail);
-          localStorage.setItem("pucPhone", pucPhone);
-        }
+       
 
-        window.location.href = "/dashboard";
+        
       } else {
         setMessage(response.message || "Failed to send OTP.");
       }
@@ -123,7 +112,7 @@ const SignupPage = () => {
               <div className="mb-3">
                 <input
                   type="text"
-                  placeholder="PUC Name"
+                  placeholder="POC Name"
                   value={pucName}
                   onChange={(e) => setPucName(e.target.value)}
                   className="form-control"
@@ -134,7 +123,7 @@ const SignupPage = () => {
               <div className="mb-3">
                 <input
                   type="email"
-                  placeholder="PUC Email"
+                  placeholder="POC Email"
                   value={pucEmail}
                   onChange={(e) => setPucEmail(e.target.value)}
                   className="form-control"
@@ -145,7 +134,7 @@ const SignupPage = () => {
               <div className="mb-3">
                 <input
                   type="tel"
-                  placeholder="PUC Phone"
+                  placeholder="POC Phone"
                   value={pucPhone}
                   onChange={(e) => setPucPhone(e.target.value)}
                   className="form-control"
