@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min"; // Import Bootstrap JS for modals
+import JobCard from "./JobCard";
 
 const UserJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
+  const [selectedJob, setSelectedJob] = useState(null);
   const [filters, setFilters] = useState({
     title: "",
     company: "",
@@ -85,56 +88,21 @@ const UserJobs = () => {
       </div>
 
       {/* Job Listings in Cards */}
-      <div className="row">
-        {currentJobs.length > 0 ? (
-          currentJobs.map((job, index) => (
-            <div key={index} className="col-md-6 mb-4">
-              <div className="card shadow-sm border-0 p-3 bg-light rounded-3 job-card">
-                <div className="card-body">
-                  {/* Job Title with Link */}
-                  <h5 className="card-title fw-bold">
-                    <a href="#" className="text-dark text-decoration-none job-title">
-                      {job.title} ({job.state})
-                    </a>
-                  </h5>
-                  
-                  {/* Company & Location */}
-                  <h6 className="card-subtitle mb-2 text-muted">{job.company}</h6>
-                  <p className="text-muted">{job.city || "Remote"}</p>
-
-                  {/* Salary, Type, Schedule */}
-                  <div className="mb-3">
-                    <span className="badge bg-dark text-light me-2 p-2">
-                      ₹{job.salary || "Not Disclosed"} / year
-                    </span>
-                    <span className="badge bg-success me-2 p-2">{job.type}</span>
-                    <span className="badge bg-secondary p-2">Monday to Friday</span>
-                  </div>
-
-                  {/* Easily Apply Section */}
-                  <p className="text-primary fw-bold">
-                    <i className="bi bi-arrow-right-circle-fill me-1"></i> Easily apply
-                  </p>
-                  
-                  {/* Job Details */}
-                  <ul className="text-muted">
-                    <li>Job Title: {job.title}</li>
-                    <li>Compensation: ₹{job.salary || "Negotiable"}</li>
-                    <li>Shift Timings: {job.type === "Full-time" ? "Monday to Friday" : "Flexible"}</li>
-                  </ul>
-                  
-                  {/* Apply Button */}
-                  <button className="btn btn-primary btn-sm w-100">Apply Now</button>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="text-center w-100">
-            <p>No jobs found.</p>
-          </div>
-        )}
+      {/* Job Listings in 2x2 Grid */}
+<div className="container">
+  <div className="row">
+    {currentJobs.length > 0 ? (
+      currentJobs.map((job, index) => (
+        <JobCard key={index} job={job} />
+      ))
+    ) : (
+      <div className="text-center w-100">
+        <p>No jobs found.</p>
       </div>
+    )}
+  </div>
+</div>
+
 
       {/* Pagination Controls */}
       {totalPages > 1 && (

@@ -91,111 +91,130 @@ const SignupPage = () => {
             </select>
           </div>
 
-        <form onSubmit={handleSendOtp}>
+        {otpSent ? (
+        <form onSubmit={handleVerifyOtp}>
           <div className="mb-3">
             <input
               type="text"
-              placeholder="Full Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
               className="form-control"
               required
             />
           </div>
-
-          <div className="mb-3">
-            <input
-              type="email"
-              placeholder="Enter Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="form-control"
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <input
-              type="tel"
-              placeholder="Mobile Number"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
-              className="form-control"
-            />
-          </div>
-
-
-          {/* Additional fields for employer */}
-          {profileType === "employer" && (
-            <>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  placeholder="GST ID"
-                  value={gst}
-                  onChange={(e) => setGst(e.target.value)}
-                  className="form-control"
-                  required
-                />
-              </div>
-
-              <div className="mb-3">
-                <input
-                  type="text"
-                  placeholder="Company ID"
-                  value={companyId}
-                  onChange={(e) => setCompanyId(e.target.value)}
-                  className="form-control"
-                  required
-                />
-              </div>
-
-              <div className="mb-3">
-                <input
-                  type="text"
-                  placeholder="POC Name"
-                  value={pucName}
-                  onChange={(e) => setPucName(e.target.value)}
-                  className="form-control"
-                  required
-                />
-              </div>
-
-              <div className="mb-3">
-                <input
-                  type="email"
-                  placeholder="POC Email"
-                  value={pucEmail}
-                  onChange={(e) => setPucEmail(e.target.value)}
-                  className="form-control"
-                  required
-                />
-              </div>
-
-              <div className="mb-3">
-                <input
-                  type="tel"
-                  placeholder="POC Phone"
-                  value={pucPhone}
-                  onChange={(e) => setPucPhone(e.target.value)}
-                  className="form-control"
-                  required
-                />
-              </div>
-            </>
-          )}
-
 
           {message && <p className="text-center text-danger">{message}</p>}
 
-          <button type="submit" className="btn btn-success w-100" disabled={loading}>
-            {loading ? "Processing..." : "Send OTP"}
+          <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+            {loading ? "Verifying OTP..." : "Verify OTP"}
           </button>
+        </form>
+        ):(
 
-          <p className="text-center mt-3">
+          <form onSubmit={handleSendOtp}>
+            <div className="mb-3">
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="form-control"
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <input
+                type="email"
+                placeholder="Enter Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="form-control"
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <input
+                type="tel"
+                placeholder="Mobile Number"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                className="form-control"
+              />
+            </div>
+
+            {/* Additional fields for employer */}
+            {profileType === "employer" && (
+              <>
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    placeholder="GST ID"
+                    value={gst}
+                    onChange={(e) => setGst(e.target.value)}
+                    className="form-control"
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    placeholder="Company ID"
+                    value={companyId}
+                    onChange={(e) => setCompanyId(e.target.value)}
+                    className="form-control"
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    placeholder="POC Name"
+                    value={pucName}
+                    onChange={(e) => setPucName(e.target.value)}
+                    className="form-control"
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <input
+                    type="email"
+                    placeholder="POC Email"
+                    value={pucEmail}
+                    onChange={(e) => setPucEmail(e.target.value)}
+                    className="form-control"
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <input
+                    type="tel"
+                    placeholder="POC Phone"
+                    value={pucPhone}
+                    onChange={(e) => setPucPhone(e.target.value)}
+                    className="form-control"
+                    required
+                  />
+                </div>
+              </>
+            )}
+
+            {message && <p className="text-center text-danger">{message}</p>}
+
+            <button type="submit" className="btn btn-success w-100" disabled={loading}>
+              {loading ? "Processing..." : "Send OTP"}
+            </button>
+            <p className="text-center mt-3">
             Already have an account? <Link to="/">Login here</Link>
           </p>
-        </form>
+          </form>
+)}
       </div>
     </div>
   );

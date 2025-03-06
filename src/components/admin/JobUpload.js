@@ -98,6 +98,7 @@ const BulkJobUpload = () => {
                 
                 <th>title</th>
                 <th>company</th>
+                <th>phone</th>
                 <th>state</th>
                 <th>city</th>
                 <th>salary</th>
@@ -109,6 +110,7 @@ const BulkJobUpload = () => {
                 <tr>
                   <td>{job.title}</td>
                   <td>{job.company}</td>
+                  <td>{job.phone}</td>
                   <td>{job.state}</td>
                   <td>{job.city}</td>
                   <td>{job.salary}</td>
@@ -128,6 +130,7 @@ const CreateJobForm = () => {
   const [jobData, setJobData] = useState({
     title: "",
     company: "",
+    phone: "",
     state: "",
     city: "",
     salary: "",
@@ -149,6 +152,7 @@ const CreateJobForm = () => {
     if (
       !jobData.title ||
       !jobData.company ||
+      !jobData.phone ||
       !jobData.state ||
       !jobData.city ||
       !jobData.salary
@@ -176,6 +180,7 @@ const CreateJobForm = () => {
       setJobData({
         title: "",
         company: "",
+        phone: "",
         state: "",
         city: "",
         salary: "",
@@ -219,6 +224,20 @@ const CreateJobForm = () => {
             value={jobData.company}
             onChange={handleChange}
             placeholder="Enter company name"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="company" className="form-label">
+            Company Contact Number
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="company"
+            name="company"
+            value={jobData.phone}
+            onChange={handleChange}
+            placeholder="Enter company contact number"  
           />
         </div>
         {/* State */}

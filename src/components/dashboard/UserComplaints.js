@@ -266,18 +266,18 @@ const UserComplaintForm = () => {
                 {/* Offer Letter PDF Upload */}
                 <div className="mb-3">
                   <label htmlFor="offerLetter" className="form-label">
-                    Offer Letter (PDF)
+                    Offer Letter (URL of PDF)
                   </label>
                   <input
-                    type="file"
+                    type="text"
                     className="form-control"
                     id="offerLetter"
                     name="offerLetter"
                     accept="application/pdf"
-                    onChange={handleFileChange}
+                    onChange={handleChange}
                   />
                   <small className="text-muted">
-                    Upload your offer letter in PDF format.
+                    Upload your offer letter in PDF format and attach link.
                   </small>
                 </div>
                 <div className="text-center">

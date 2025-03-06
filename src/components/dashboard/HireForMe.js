@@ -9,6 +9,7 @@ const HireMeForm = () => {
     email: "",
     role: "",
     company: "",
+    vacancy: "",
     companyAdd: "",
     companyPOC: "",
     companyNo: "",
@@ -54,6 +55,7 @@ const HireMeForm = () => {
         email: "",
         role: "",
         company: "",
+        vacancy: "",
         companyAdd: "",
         companyPOC: "",
         companyNo: "",
@@ -167,6 +169,21 @@ const HireMeForm = () => {
                     />
                   </div>
                   <div className="col-md-6 mb-3">
+                  <label htmlFor="numOfVacancy" className="form-label">
+                    Vacancy
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="numOfVacancy"
+                    name="numOfVacancy"
+                    value={formData.numOfVacancy}
+                    onChange={handleChange}
+                    placeholder="0"
+                    required
+                  />
+                </div>
+                  <div className="mb-3">
                     <label htmlFor="companyAdd" className="form-label">
                       Company Address
                     </label>

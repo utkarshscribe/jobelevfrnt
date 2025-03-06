@@ -14,8 +14,8 @@ import HireMe from "./admin/HireMe";
 import Resume from "./ResumeBuilder.js";
 import ProfileDetails from "./ProfileDetails.js";
 import ViewedResumes from "./ViewedResumes.js";
-import BulkUser from "./BulkUser.js";
-import AlluserDetails from "./AlluserDetails.js";
+import BulkUser from "./admin/BulkUser.js";
+import AlluserDetails from "./admin/AlluserDetails.js";
 
 const UserDashboard = () => {
   const navigate = useNavigate(); // Hook to navigate between pages
@@ -185,7 +185,7 @@ const UserDashboard = () => {
             <>
             <li className="nav-item">
               <NavLink
-                to="/add-users"
+                to="/dashboard/add-users"
                 className={({ isActive }) =>
                   `nav-link d-flex align-items-center px-3 py-2 rounded ${
                     isActive ? "bg-primary text-white" : "text-white-50"
@@ -198,7 +198,7 @@ const UserDashboard = () => {
             </li>
             <li className="nav-item">
               <NavLink
-                to="/all-users"
+                to="/dashboard/all-users"
                 className={({ isActive }) =>
                   `nav-link d-flex align-items-center px-3 py-2 rounded ${
                     isActive ? "bg-primary text-white" : "text-white-50"
@@ -240,16 +240,16 @@ const UserDashboard = () => {
           )}
           {role === "user"  && 
           <li className="nav-item mb-3">
-  <NavLink
-    className={({ isActive }) =>
-      "nav-link d-flex align-items-center px-3 py-2 rounded text-white-50"
-    }
-    onClick={() => window.open("https://sb-auth.skillsbuild.org/", "_blank")}
-  >
-    <i className="bi bi-box-arrow-in-right me-2"></i>
-    Skills Development
-  </NavLink>
-</li>
+            <NavLink
+              className={({ isActive }) =>
+                "nav-link d-flex align-items-center px-3 py-2 rounded text-white-50"
+              }
+              onClick={() => window.open("https://sb-auth.skillsbuild.org/", "_blank")}
+            >
+              <i className="bi bi-box-arrow-in-right me-2"></i>
+              Skills Development
+            </NavLink>
+          </li>
           }
         </ul>
       </aside>

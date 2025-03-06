@@ -52,6 +52,7 @@ const ResponsesList = () => {
                 <th>Email</th>
                 <th>Role</th>
                 <th>Company</th>
+                <th>Vacancy</th>
                 <th>Company Address</th>
                 <th>Company POC</th>
                 <th>Company Contact</th>
@@ -68,6 +69,7 @@ const ResponsesList = () => {
                   <td>{res.email || "N/A"}</td>
                   <td>{res.role || "N/A"}</td>
                   <td>{res.company || "N/A"}</td>
+                  <td>{res.vacancy || "N/A"}</td>
                   <td>{res.companyAdd || "N/A"}</td>
                   <td>{res.companyPOC || "N/A"}</td>
                   <td>{res.companyNo || "N/A"}</td>
