@@ -149,6 +149,13 @@ const ProfileDetails = () => {
   return (
     <div className="p-4 bg-white shadow-md rounded-lg">
       <h2 className="text-xl font-bold mb-4">Profile Details</h2>
+
+      <button
+        className="btn btn-info position-absolute top-0 end-0 m-3"
+        onClick={() => window.open(`/viewresume/${userData._id}`, "_blank")}>
+          
+        View My Resume
+      </button>
       
         <div>
           <h4>Personal Information</h4>

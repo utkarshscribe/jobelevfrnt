@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { NavLink, Routes, Route, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css"; // Ensure Bootstrap Icons CSS is imported
-import MyResume from "./dashboard/MyResume.js";
 import UserComplaints from "./dashboard/UserComplaints.js";
 import UserJobs from "./dashboard/UserJobs.js";
 import { getUser } from "../services/authService.js";
@@ -16,6 +15,7 @@ import ProfileDetails from "./ProfileDetails.js";
 import ViewedResumes from "./ViewedResumes.js";
 import BulkUser from "./admin/BulkUser.js";
 import AlluserDetails from "./admin/AlluserDetails.js";
+import EmbeddedAuth from "./EmbeddedAuth.js";
 
 const UserDashboard = () => {
   const navigate = useNavigate(); // Hook to navigate between pages
@@ -79,20 +79,7 @@ const UserDashboard = () => {
       </NavLink>
     </li>
   )}
-          {role === "user" && (
-            <li className="nav-item mb-3">
-              <NavLink
-                to="/dashboard/resume"
-                className={({ isActive }) =>
-                  "nav-link d-flex align-items-center px-3 py-2 rounded " +
-                  (isActive ? "bg-primary text-white" : "text-white-50")
-                }
-              >
-                <i className="bi bi-file-earmark-person me-2"></i>
-                My Resume
-              </NavLink>
-            </li>
-          )}
+          
           {role !== "employer" && (
             <li className="nav-item mb-3">
               <NavLink
@@ -244,7 +231,8 @@ const UserDashboard = () => {
               className={({ isActive }) =>
                 "nav-link d-flex align-items-center px-3 py-2 rounded text-white-50"
               }
-              onClick={() => window.open("https://sb-auth.skillsbuild.org/", "_blank")}
+              to="/dashboard/skilldev"
+              //onClick={() => window.open("https://sb-auth.skillsbuild.org/", "_blank")}
             >
               <i className="bi bi-box-arrow-in-right me-2"></i>
               Skills Development
@@ -284,14 +272,13 @@ const UserDashboard = () => {
                   <Route path="complaints" element={<AdminComplaints />} />
                   <Route path="hireme" element={<HireForMe />} />
                   <Route path="hiremes" element={<HireMe />} />
-                  <Route path="resume" element={<MyResume />} />
                   <Route path="complaint" element={<UserComplaints />} />
                   <Route path="jobs" element={<UserJobs />} />
                   <Route path="resumes" element={<Resume />} />
                   <Route path="all-users" element={<AlluserDetails />} />
                   <Route path="add-users" element={<BulkUser />} />
                   <Route path="candidate-resumes" element={<ViewedResumes />} />
-                  
+                  <Route path="skilldev" element={<EmbeddedAuth/>} />
                 </Routes>
               </div>
             </div>
