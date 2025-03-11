@@ -7,6 +7,7 @@ const ProfileDetails = () => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [userType, setUserType] = useState("");
+  const [profileType, setProfileType] = useState("");
 
   // Profile fields state
   const [fullName, setFullName] = useState("");
@@ -100,19 +101,20 @@ const ProfileDetails = () => {
       mobile: phone,
       location,
       summary,
-      balance,
-      expiry,
       certifications,
       languages,
       projects,
       education,
       skills,
       experience,
-      ...(userType === "employer" && { gst, companyId, pucName, pucEmail, pucPhone }),
-    };
+      gst, 
+      companyId,
+      pucName,
+      pucEmail,
+      pucPhone};
 
     fetch("https://jobapi.crmpannel.site/auth/v1/user", {
-      method: "PATCH",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
@@ -149,14 +151,15 @@ const ProfileDetails = () => {
   return (
     <div className="p-4 bg-white shadow-md rounded-lg">
       <h2 className="text-xl font-bold mb-4">Profile Details</h2>
-
+      {(userData.profileType === "user" &&  (
+        <>
       <button
         className="btn btn-info position-absolute top-0 end-0 m-3"
-        onClick={() => window.open(`/viewresume/${userData._id}`, "_blank")}>
-          
+        onClick={() => window.open(`/viewresume/${userData._id}`, "_blank")}>  
         View My Resume
       </button>
-      
+      </>
+      ))};
         <div>
           <h4>Personal Information</h4>
           <div className="mb-2">
@@ -190,6 +193,8 @@ const ProfileDetails = () => {
             />
           </div>
 
+          {profileType === "user" && (
+            <>
           {/* Location */}
           <h4>Location</h4>
           <div className="mb-2">
@@ -229,24 +234,7 @@ const ProfileDetails = () => {
             rows="3"
           ></textarea>
 
-          {/* Balance */}
-          <h4>Balance</h4>
-          <input
-            type="number"
-            value={balance || ""}
-            onChange={(e) => setBalance(e.target.value)}
-            className="form-control"
-          />
-
-          {/* Expiry */}
-          <h4>Expiry</h4>
-          <input
-            type="date"
-            value={expiry || ""}
-            onChange={(e) => setExpiry(e.target.value)}
-            className="form-control"
-          />
-
+          
           {/* Education */}
           <h4>Education</h4>
           {education.map((edu, index) => (
@@ -414,7 +402,68 @@ const ProfileDetails = () => {
           >
             <span className="bi bi-plus-circle"></span> Add Skill
           </button>
+          </>
+          )}
 
+          {(userData.profileType === "employer" && (
+             <>
+             <div className="mb-3">
+                  <input
+                    type="text"
+                    placeholder="GST ID"
+                    value={gst}
+                    onChange={(e) => setGst(e.target.value)}
+                    className="form-control"
+                    
+                  />
+                </div>
+
+
+             <div className="mb-3">
+               <input
+                 type="text"
+                 placeholder="Company ID"
+                 value={companyId}
+                 onChange={(e) => setCompanyId(e.target.value)}
+                 className="form-control"
+                 required
+               />
+             </div>
+
+             <div className="mb-3">
+               <input
+                 type="text"
+                 placeholder="POC Name"
+                 value={pucName}
+                 onChange={(e) => setPucName(e.target.value)}
+                 className="form-control"
+                 required
+               />
+             </div>
+
+             <div className="mb-3">
+               <input
+                 type="email"
+                 placeholder="POC Email"
+                 value={pucEmail}
+                 onChange={(e) => setPucEmail(e.target.value)}
+                 className="form-control"
+                 required
+               />
+             </div>
+
+             <div className="mb-3">
+               <input
+                 type="tel"
+                 placeholder="POC Phone"
+                 value={pucPhone}
+                 onChange={(e) => setPucPhone(e.target.value)}
+                 className="form-control"
+                 required
+               />
+             </div>
+           </>
+          ))}
           {/* Save Profile Button */}
           <button className="btn btn-success my-3" onClick={handleSave}>
             Save Profile

@@ -155,7 +155,7 @@ const SignupPage = () => {
                     value={gst}
                     onChange={(e) => setGst(e.target.value)}
                     className="form-control"
-                    required
+                    
                   />
                 </div>
 
