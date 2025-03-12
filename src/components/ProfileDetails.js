@@ -114,7 +114,7 @@ const ProfileDetails = () => {
       pucPhone};
 
     fetch("https://jobapi.crmpannel.site/auth/v1/user", {
-      method: "GET",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
@@ -133,17 +133,28 @@ const ProfileDetails = () => {
       });
   };
 
-  // Handle change for all form fields
-  const handleChange = (e, index, field, setState) => {
-    const { name, value } = e.target;
-    const updatedArray = [...setState];
-    updatedArray[index][field] = value;
-    setState(updatedArray);
-  };
+  
 
-  // Add/remove for arrays
-  const addItem = (state, setState, item) => setState([...state, item]);
-  const removeItem = (index, state, setState) => setState(state.filter((_, i) => i !== index));
+  // Handle change for all form fields
+  const handleChange = (setFunction, index, field, value) => {
+    setFunction((prevItems) =>
+      prevItems.map((item, i) => (i === index ? { ...item, [field]: value } : item))
+    );
+  };
+   
+  const addItem = (setFunction, newItem) => {
+    setFunction((prevItems) => [...prevItems, newItem]);
+  };
+   
+  const removeItem = (setFunction, index) => {
+    setFunction((prevItems) => prevItems.filter((_, i) => i !== index));
+  };
+  
+
+  // Function to add a new education entry
+
+  
+  
 
   if (loading) return <p>Loading...</p>;
   if (!userData) return <p>No data available</p>;
@@ -159,7 +170,7 @@ const ProfileDetails = () => {
         View My Resume
       </button>
       </>
-      ))};
+      ))}
         <div>
           <h4>Personal Information</h4>
           <div className="mb-2">
@@ -193,7 +204,7 @@ const ProfileDetails = () => {
             />
           </div>
 
-          {profileType === "user" && (
+          {userData.profileType === "user" && (
             <>
           {/* Location */}
           <h4>Location</h4>
@@ -236,6 +247,7 @@ const ProfileDetails = () => {
 
           
           {/* Education */}
+          
           <h4>Education</h4>
           {education.map((edu, index) => (
             <div key={index} className="mb-3">
@@ -244,7 +256,7 @@ const ProfileDetails = () => {
                 <input
                   type="text"
                   value={edu.degree || ""}
-                  onChange={(e) => handleChange(e, index, "degree", setEducation)}
+                  onChange={(e) => handleChange(setEducation, index, "degree", e.target.value)}
                   className="form-control"
                 />
               </div>
@@ -253,7 +265,7 @@ const ProfileDetails = () => {
                 <input
                   type="text"
                   value={edu.institution || ""}
-                  onChange={(e) => handleChange(e, index, "institution", setEducation)}
+                  onChange={(e) => handleChange(setEducation, index, "institution", e.target.value)}
                   className="form-control"
                 />
               </div>
@@ -262,7 +274,7 @@ const ProfileDetails = () => {
                 <input
                   type="date"
                   value={edu.startDate || ""}
-                  onChange={(e) => handleChange(e, index, "startDate", setEducation)}
+                  onChange={(e) => handleChange(setEducation, index, "startDate", e.target.value)}
                   className="form-control"
                 />
               </div>
@@ -271,7 +283,7 @@ const ProfileDetails = () => {
                 <input
                   type="date"
                   value={edu.endDate || ""}
-                  onChange={(e) => handleChange(e, index, "endDate", setEducation)}
+                  onChange={(e) => handleChange(setEducation, index, "endDate", e.target.value)}
                   className="form-control"
                 />
               </div>
@@ -279,14 +291,14 @@ const ProfileDetails = () => {
                 <label className="form-label">Description</label>
                 <textarea
                   value={edu.description || ""}
-                  onChange={(e) => handleChange(e, index, "description", setEducation)}
+                  onChange={(e) => handleChange(setEducation, index, "description", e.target.value)}
                   className="form-control"
                   rows="3"
                 ></textarea>
               </div>
               <button
                 className="btn btn-danger"
-                onClick={() => removeItem(index, education, setEducation)}
+                onClick={() => removeItem(setEducation, index)}
               >
                 Remove Education
               </button>
@@ -294,12 +306,12 @@ const ProfileDetails = () => {
           ))}
           <button
             className="btn btn-outline-primary"
-            onClick={() => addItem(education, setEducation, { degree: "", institution: "", startDate: "", endDate: "", description: "" })}
+            onClick={() => addItem(setEducation, { degree: "", institution: "", startDate: "", endDate: "", description: "" })}
           >
             <span className="bi bi-plus-circle"></span> Add Education
           </button>
 
-          {/* Experience */}
+
           <h4>Experience</h4>
           {experience.map((exp, index) => (
             <div key={index} className="mb-3">
@@ -308,16 +320,16 @@ const ProfileDetails = () => {
                 <input
                   type="text"
                   value={exp.jobTitle || ""}
-                  onChange={(e) => handleChange(e, index, "jobTitle", setExperience)}
+                  onChange={(e) => handleChange(setExperience, index, "jobTitle", e.target.value)}
                   className="form-control"
                 />
               </div>
               <div className="mb-2">
-                <label className="form-label">Company Name</label>
+                <label className="form-label">Company</label>
                 <input
                   type="text"
-                  value={exp.companyName || ""}
-                  onChange={(e) => handleChange(e, index, "companyName", setExperience)}
+                  value={exp.company || ""}
+                  onChange={(e) => handleChange(setExperience, index, "company", e.target.value)}
                   className="form-control"
                 />
               </div>
@@ -326,7 +338,7 @@ const ProfileDetails = () => {
                 <input
                   type="date"
                   value={exp.startDate || ""}
-                  onChange={(e) => handleChange(e, index, "startDate", setExperience)}
+                  onChange={(e) => handleChange(setExperience, index, "startDate", e.target.value)}
                   className="form-control"
                 />
               </div>
@@ -335,7 +347,7 @@ const ProfileDetails = () => {
                 <input
                   type="date"
                   value={exp.endDate || ""}
-                  onChange={(e) => handleChange(e, index, "endDate", setExperience)}
+                  onChange={(e) => handleChange(setExperience, index, "endDate", e.target.value)}
                   className="form-control"
                 />
               </div>
@@ -343,94 +355,90 @@ const ProfileDetails = () => {
                 <label className="form-label">Description</label>
                 <textarea
                   value={exp.description || ""}
-                  onChange={(e) => handleChange(e, index, "description", setExperience)}
+                  onChange={(e) => handleChange(setExperience, index, "description", e.target.value)}
                   className="form-control"
                   rows="3"
                 ></textarea>
               </div>
-              <button
-                className="btn btn-danger"
-                onClick={() => removeItem(index, experience, setExperience)}
-              >
+              <button className="btn btn-danger" onClick={() => removeItem(setExperience, index)}>
                 Remove Experience
               </button>
             </div>
           ))}
-          <button
-            className="btn btn-outline-primary"
-            onClick={() => addItem(experience, setExperience, { jobTitle: "", companyName: "", startDate: "", endDate: "", description: "" })}
-          >
+          <button className="btn btn-outline-primary" onClick={() => addItem(setExperience, { jobTitle: "", company: "", startDate: "", endDate: "", description: "" })}>
             <span className="bi bi-plus-circle"></span> Add Experience
           </button>
 
+
           {/* Skills */}
           <h4>Skills</h4>
-          {skills.map((skill, index) => (
-            <div key={index} className="mb-3">
-              <div className="mb-2">
-                <label className="form-label">Skill Name</label>
-                <input
-                  type="text"
-                  value={skill.skillName || ""}
-                  onChange={(e) => handleChange(e, index, "skillName", setSkills)}
-                  className="form-control"
-                />
-              </div>
-              <div className="mb-2">
-                <label className="form-label">Proficiency</label>
-                <select
-                  value={skill.proficiency}
-                  onChange={(e) => handleChange(e, index, "proficiency", setSkills)}
-                  className="form-select"
-                >
-                  <option value="Beginner">Beginner</option>
-                  <option value="Intermediate">Intermediate</option>
-                  <option value="Expert">Expert</option>
-                </select>
-              </div>
-              <button
-                className="btn btn-danger"
-                onClick={() => removeItem(index, skills, setSkills)}
-              >
-                Remove Skill
-              </button>
-            </div>
-          ))}
-          <button
-            className="btn btn-outline-primary"
-            onClick={() => addItem(skills, setSkills, { skillName: "", proficiency: "Beginner" })}
-          >
-            <span className="bi bi-plus-circle"></span> Add Skill
-          </button>
-          </>
+{skills.map((skill, index) => (
+  <div key={index} className="mb-3 d-flex flex-column">
+    <div className="mb-2">
+      <label className="form-label">Skill Name</label>
+      <input
+        type="text"
+        value={skill.skillName || ""}
+        onChange={(e) => handleChange(setSkills, index, "skillName", e.target.value)}
+        className="form-control"
+        placeholder="Skill Name"
+      />
+    </div>
+    <div className="mb-2">
+      <label className="form-label">Proficiency</label>
+      <select
+        value={skill.proficiency || "Beginner"}
+        onChange={(e) => handleChange(setSkills, index, "proficiency", e.target.value)}
+        className="form-select"
+      >
+        <option value="Beginner">Beginner</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Expert">Expert</option>
+      </select>
+    </div>
+    <button className="btn btn-danger" onClick={() => removeItem(setSkills, index)}>
+      Remove Skill
+    </button>
+  </div>
+))}
+<button
+  className="btn btn-outline-primary"
+  onClick={() => addItem(setSkills, { skillName: "", proficiency: "Beginner" })}
+>
+  <span className="bi bi-plus-circle"></span> Add Skill
+</button>
+</>
           )}
 
           {(userData.profileType === "employer" && (
              <>
              <div className="mb-3">
+                  <label className="form-label">GST ID</label>
                   <input
                     type="text"
                     placeholder="GST ID"
                     value={gst}
                     onChange={(e) => setGst(e.target.value)}
-                    className="form-control"
-                    
+                    className="form-control" 
                   />
                 </div>
 
 
              <div className="mb-3">
+              <label className="form-label">Company ID</label>
                <input
                  type="text"
                  placeholder="Company ID"
                  value={companyId}
                  onChange={(e) => setCompanyId(e.target.value)}
                  className="form-control"
-                 required
-               />
+                 required 
+                />
+               
              </div>
 
              <div className="mb-3">
+                <label className="form-label">POC Name</label>
                <input
                  type="text"
                  placeholder="POC Name"
@@ -442,6 +450,7 @@ const ProfileDetails = () => {
              </div>
 
              <div className="mb-3">
+                <label className="form-label">POC Email</label>
                <input
                  type="email"
                  placeholder="POC Email"
@@ -453,6 +462,7 @@ const ProfileDetails = () => {
              </div>
 
              <div className="mb-3">
+                <label className="form-label">POC Phone</label>
                <input
                  type="tel"
                  placeholder="POC Phone"
@@ -465,6 +475,12 @@ const ProfileDetails = () => {
            </>
           ))}
           {/* Save Profile Button */}
+          {!isEditing ? (
+            <button className="btn btn-primary bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition-transform duration-300 hover:bg-blue-700 active:scale-95 mt-8 mr-4" onClick={() => setIsEditing(true)}>
+              Edit Profile
+            </button>
+          ) : (
+          <>
           <button className="btn btn-success my-3" onClick={handleSave}>
             Save Profile
           </button>
@@ -474,11 +490,11 @@ const ProfileDetails = () => {
           >
             Cancel
           </button>
+          </>
+          )}
         </div>
           
-          <button className="btn btn-primary" onClick={() => setIsEditing(true)}>
-            Edit Profile
-          </button>
+         
 
           <h2 className="text-xl font-bold mt-6">
         {userData.profileType === "user" ? "Subscription" : "Wallet"}
