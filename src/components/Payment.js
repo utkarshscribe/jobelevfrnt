@@ -41,7 +41,7 @@ const Payment = () => {
         
      console.log( order);
             const options = {
-                key: "rzp_test_33IoIdjYWhJxb8",
+                key: "rzp_live_TMPMmrCsvewArv",
                 amount: order.amount,
                 currency: order.currency,
                 name: "Job Elevator - Advertrone",
@@ -49,8 +49,8 @@ const Payment = () => {
                 order_id: order.id,
                 handler: async function (response) {
                     const verifyResponse = await axios.post("https://jobapi.crmpannel.site/auth/v1/verify-pay", {
-                        RAZORPAY_KEY_ID:"rzp_test_33IoIdjYWhJxb8",
-                        RAZORPAY_KEY_SECRET:"wJGkODzUJ7sm9ehDtkxkUvl4",
+                        RAZORPAY_KEY_ID:"rzp_live_TMPMmrCsvewArv",
+                        RAZORPAY_KEY_SECRET:"msoPoMesuiLMO9GMSp7GIooc",
                         razorpay_signature: response.razorpay_signature,
                         amount: order.amount
                     },

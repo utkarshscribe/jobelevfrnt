@@ -372,44 +372,196 @@ const ProfileDetails = () => {
 
           {/* Skills */}
           <h4>Skills</h4>
-{skills.map((skill, index) => (
-  <div key={index} className="mb-3 d-flex flex-column">
-    <div className="mb-2">
-      <label className="form-label">Skill Name</label>
-      <input
-        type="text"
-        value={skill.skillName || ""}
-        onChange={(e) => handleChange(setSkills, index, "skillName", e.target.value)}
-        className="form-control"
-        placeholder="Skill Name"
-      />
-    </div>
-    <div className="mb-2">
-      <label className="form-label">Proficiency</label>
-      <select
-        value={skill.proficiency || "Beginner"}
-        onChange={(e) => handleChange(setSkills, index, "proficiency", e.target.value)}
-        className="form-select"
-      >
-        <option value="Beginner">Beginner</option>
-        <option value="Intermediate">Intermediate</option>
-        <option value="Expert">Expert</option>
-      </select>
-    </div>
-    <button className="btn btn-danger" onClick={() => removeItem(setSkills, index)}>
-      Remove Skill
-    </button>
-  </div>
-))}
-<button
-  className="btn btn-outline-primary"
-  onClick={() => addItem(setSkills, { skillName: "", proficiency: "Beginner" })}
->
-  <span className="bi bi-plus-circle"></span> Add Skill
-</button>
-</>
+          {skills.map((skill, index) => (
+            <div key={index} className="mb-3 d-flex flex-column">
+              <div className="mb-2">
+                <label className="form-label">Skill Name</label>
+                <input
+                  type="text"
+                  value={skill.skillName || ""}
+                  onChange={(e) => handleChange(setSkills, index, "skillName", e.target.value)}
+                  className="form-control"
+                  placeholder="Skill Name"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="form-label">Proficiency</label>
+                <select
+                  value={skill.proficiency || "Beginner"}
+                  onChange={(e) => handleChange(setSkills, index, "proficiency", e.target.value)}
+                  className="form-select"
+                >
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Expert">Expert</option>
+                </select>
+              </div>
+              <button className="btn btn-danger" onClick={() => removeItem(setSkills, index)}>
+                          Remove Skills
+                        </button>
+            </div>
+          ))}
+
+          <button
+            className="btn btn-outline-primary"
+            onClick={() => addItem(setSkills, { skillName: "", proficiency: "Beginner" })}
+          >
+            <span className="bi bi-plus-circle"></span> Add Skill
+          </button>
+          </>
           )}
 
+        {userData.profileType === "user" && (
+          <>
+          <h4>Certifications</h4>
+          {certifications.map((cert, index) => (
+              
+            <div key={index} className="mb-3">
+              <div className="mb-2">
+                <label className="form-label">Title</label>
+                <input
+                  type="text"
+                  value={cert.title || ""}
+                  onChange={(e) => handleChange(setCertifications, index, "title", e.target.value)}
+                  className="form-control"
+                />
+               </div>
+              <div className="mb-2">
+                <label className="form-label">Institution</label>
+                <input
+                  type="text"
+                  value={cert.institution || ""}
+                  onChange={(e) => handleChange(setCertifications, index, "institution", e.target.value)}
+                  className="form-control"
+                />  
+                </div>
+              <div className="mb-2">
+                <label className="form-label">Date Issued</label>
+                <input
+                  type="date"
+                  value={cert.dateIssued || ""}
+                  onChange={(e) => handleChange(setCertifications, index, "dateIssued", e.target.value)}
+                  className="form-control"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="form-label">Expiration Date</label>
+                <input
+                  type="date"
+                  value={cert.expirationDate || ""}
+                  onChange={(e) => handleChange(setCertifications, index, "expirationDate", e.target.value)}
+                  className="form-control"
+                />
+              </div>
+              <button className="btn btn-danger" onClick={() => removeItem(setCertifications, index)}>
+                Remove Certifications
+              </button>
+            </div>
+           
+          ))}  
+          
+          <button className="btn btn-outline-primary" onClick={() => addItem(setCertifications, { title: "", institution: "", dateIssued: "", expirationDate: "" })}>
+            <span className="bi bi-plus-circle"></span> Add Certifications</button>
+          </>
+        
+          )}
+
+          {userData.profileType === "user" && (
+            <>
+          <h4>Languages</h4>
+          {languages.map((lang, index) => (
+            <div key={index} className="mb-3">
+              <div className="mb-2">
+                <label className="form-label">Language</label>
+                <input
+                  type="text"
+                  value={lang.language || ""}
+                  onChange={(e) => handleChange(setLanguages, index, "language", e.target.value)}
+                  className="form-control"
+                />  
+              </div>
+              <div className="mb-2">
+                <label className="form-label">Proficiency</label>
+                <select
+                  value={lang.proficiency || "Basic"}
+                  onChange={(e) => handleChange(setLanguages, index, "proficiency", e.target.value)}
+                  className="form-select"
+                >
+                  <option value="Basic">Basic</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                </select> 
+              </div>
+              <button className="btn btn-danger" onClick={() => removeItem(setLanguages, index)}>
+                Remove Languages
+              </button>
+            </div>
+          ))}
+          <button className="btn btn-outline-primary" onClick={() => addItem(setLanguages, { language: "", proficiency: "Basic" })}>
+            <span className="bi bi-plus-circle"></span> Add Languages</button>
+          </>
+          )}
+          {userData.profileType === "user" && (
+            <>
+          <h4>Projects</h4>
+          {projects.map((proj, index) => (
+            <div key={index} className="mb-3">
+              <div className="mb-2">
+                <label className="form-label">Project Name</label>
+                <input
+                  type="text"
+                  value={proj.projectName || ""}
+                  onChange={(e) => handleChange(setProjects, index, "projectName", e.target.value)}
+                  className="form-control"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="form-label">Description</label>
+                <textarea
+                  value={proj.description || ""}
+                  onChange={(e) => handleChange(setProjects, index, "description", e.target.value)}
+                  className="form-control"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div className="mb-2">
+                <label className="form-label">Technologies Used</label>
+                <input
+                  type="text"
+                  value={proj.technologiesUsed || ""}
+                  onChange={(e) => handleChange(setProjects, index, "technologiesUsed", e.target.value)}
+                  className="form-control"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="form-label">Start Date</label>
+                <input
+                  type="date"
+                  value={proj.startDate || ""}
+                  onChange={(e) => handleChange(setProjects, index, "startDate", e.target.value)}
+                  className="form-control"
+                />
+
+              </div>
+              <div className="mb-2">
+                <label className="form-label">End Date</label>
+                <input
+                  type="date"
+                  value={proj.endDate || ""}
+                  onChange={(e) => handleChange(setProjects, index, "endDate", e.target.value)}
+                  className="form-control"
+                />
+              </div>
+              <button className="btn btn-danger" onClick={() => removeItem(setProjects, index)}>
+                Remove Projects
+              </button>
+            </div>
+          ))}
+          <button className="btn btn-outline-primary" onClick={() => addItem(setProjects, { projectName: "", description: "", technologiesUsed: "", startDate: "", endDate: "" })}>
+            <span className="bi bi-plus-circle"></span> Add Projects</button>
+          </>
+          )}
+          
           {(userData.profileType === "employer" && (
              <>
              <div className="mb-3">
